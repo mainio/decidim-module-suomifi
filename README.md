@@ -1,7 +1,7 @@
 # Decidim::Suomifi
 
-[![Build Status](https://travis-ci.com/mainio/decidim-module-samlauth.svg?branch=master)](https://travis-ci.com/mainio/decidim-module-samlauth)
-[![codecov](https://codecov.io/gh/mainio/decidim-module-samlauth/branch/master/graph/badge.svg)](https://codecov.io/gh/mainio/decidim-module-samlauth)
+[![Build Status](https://travis-ci.com/mainio/decidim-module-suomifi.svg?branch=master)](https://travis-ci.com/mainio/decidim-module-suomifi)
+[![codecov](https://codecov.io/gh/mainio/decidim-module-suomifi/branch/master/graph/badge.svg)](https://codecov.io/gh/mainio/decidim-module-suomifi)
 
 A [Decidim](https://github.com/decidim/decidim) module to add Suomi.fi
 strong authentication to Decidim as a way to authenticate and authorize the
