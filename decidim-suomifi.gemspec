@@ -10,8 +10,8 @@ Gem::Specification.new do |spec|
   spec.authors = ["Antti Hukkanen"]
   spec.email = ["antti.hukkanen@mainiotech.fi"]
 
-  spec.summary = "Provides possibility to bind SAML authentication providers to Decidim."
-  spec.description = "Adds configurable SAML authentication providers to Decidim."
+  spec.summary = "Provides possibility to bind Suomi.fi authentication provider to Decidim."
+  spec.description = "Adds Suomi.fi authentication provider to Decidim."
   spec.homepage = "https://github.com/mainio/decidim-module-suomifi"
   spec.license = "AGPL-3.0"
 
