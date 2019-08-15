@@ -2,19 +2,19 @@ sv:
   decidim:
     authorization_handlers:
       suomifi_eid:
-        explanation: Identify yourself using the Suomi.fi e-Identification service.
-        name: Suomi.fi e-Identification
+        explanation: Identifiera dig själv med Suomi.fi-identifikation.
+        name: Suomi.fi-identifikation
     suomifi:
       omniauth_callbacks:
         failure:
-          already_authorized: Another user has already authorized themselves with the same identity.
-          conditions: The authentication request was not handled within an allowed timeframe. Please try again.
-          identity_bound_to_other_user: Another user has already been identified using this identity. Please sign out and sign in again directly using Suomi.fi.
-          session_expiration: Authentication session expired. Please try again.
-          success_status: Authentication failed or cancelled. Please try again.
+          already_authorized: En annan användare har redan godkänt sig med samma identitet.
+          conditions: Autentiseringsbegäran hanterades inte inom en tillåten tidsram. Var god försök igen.
+          identity_bound_to_other_user: En annan användare har redan identifierats med denna identitet. Logga ut och logga in igen direkt med Suomi.fi.
+          session_expiration: Autentiseringssessionen har gått ut. Var god försök igen.
+          success_status: Autentiseringen misslyckades eller avbröts. Var god försök igen.
       verification:
         authorizations:
           create:
-            success: You have been successfully authorized through Suomi.fi
+            success: Du har godkänts med Suomi.fi
           destroy:
-            success: Authorization sucessfully reset.
+            success: Tillståndet återställs efterhand.
