@@ -26,7 +26,7 @@ module Decidim
     # Defines the auto email domain in case the person's email address is not
     # stored in the Suomi.fi database. In case this is defined, the user will
     # be automatically assigned an email such as
-    # "identifier@auto-email-domain.fi" upon their registration.
+    # "suomifi-identifier@auto-email-domain.fi" upon their registration.
     config_accessor :auto_email_domain
 
     config_accessor :sp_entity_id, instance_reader: false

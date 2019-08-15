@@ -29,7 +29,7 @@ module Decidim
         end
 
         def load_seed
-          # Enable the `:suomifi` authorization
+          # Enable the `:suomifi_eid` authorization
           org = Decidim::Organization.first
           org.available_authorizations << :suomifi_eid
           org.save!
