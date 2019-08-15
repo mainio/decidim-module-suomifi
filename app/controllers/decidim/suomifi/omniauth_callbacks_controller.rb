@@ -58,8 +58,8 @@ module Decidim
 
       def failure
         strategy = failed_strategy
-        saml_response = strategy.response_object
-        return super if !strategy || saml_response.nil?
+        saml_response = strategy.response_object if strategy
+        return super unless saml_response
 
         # In case we want more info about the returned status codes, use the
         # code below.
