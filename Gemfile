@@ -13,13 +13,7 @@ require_relative "#{base_path}lib/decidim/suomifi/version"
 gem "decidim", Decidim::Suomifi::DECIDIM_VERSION
 gem "decidim-suomifi", path: "."
 
-# Local version of the omniauth-suomifi gem
-omniauth_path = if File.basename(__dir__) == "development_app"
-                  "../../omniauth-suomifi"
-                else
-                  "../omniauth-suomifi"
-                end
-gem "omniauth-suomifi", path: omniauth_path
+gem "omniauth-suomifi", "~> 0.1.0"
 
 gem "bootsnap", "~> 1.4"
 gem "puma", "~> 3.12"
