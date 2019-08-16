@@ -77,6 +77,12 @@ module Decidim
         end
       end
 
+      initializer "decidim_suomifi.mail_interceptors" do
+        ActionMailer::Base.register_interceptor(
+          MailInterceptors::GeneratedRecipientsInterceptor
+        )
+      end
+
       def self.add_omniauth_provider
         # Add :suomifi to the Decidim omniauth providers
         providers = ::Decidim::User::OMNIAUTH_PROVIDERS

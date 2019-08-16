@@ -7,6 +7,7 @@ require "henkilotunnus"
 require_relative "suomifi/version"
 require_relative "suomifi/engine"
 require_relative "suomifi/verification"
+require_relative "suomifi/mail_interceptors"
 
 module Decidim
   module Suomifi

@@ -45,6 +45,11 @@ end
 
 Decidim::Suomifi::Test::Runtime.load_app
 
+# Add the test templates path to ActionMailer
+ActionMailer::Base.prepend_view_path(
+  File.expand_path(File.join(__dir__, "fixtures", "mailer_templates"))
+)
+
 RSpec.configure do |config|
   # Make it possible to sign in and sign out the user in the request type specs.
   # This is needed because we need the request type spec for the omniauth

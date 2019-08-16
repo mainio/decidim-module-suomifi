@@ -125,6 +125,14 @@ describe Decidim::Suomifi::Engine do
     run_initializer("decidim_suomifi.omniauth_provider")
   end
 
+  it "adds the mail interceptor" do
+    expect(ActionMailer::Base).to receive(:register_interceptor).with(
+      Decidim::Suomifi::MailInterceptors::GeneratedRecipientsInterceptor
+    )
+
+    run_initializer("decidim_suomifi.mail_interceptors")
+  end
+
   describe "#add_omniauth_provider" do
     it "adds the :suomifi OmniAuth provider" do
       # Reset the constant
