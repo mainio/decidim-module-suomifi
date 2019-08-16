@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "omniauth"
-require "omniauth-saml"
+require "omniauth-suomifi"
 require "henkilotunnus"
 
 require_relative "suomifi/version"
