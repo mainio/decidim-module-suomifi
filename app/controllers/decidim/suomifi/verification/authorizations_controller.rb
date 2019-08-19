@@ -4,6 +4,8 @@ module Decidim
   module Suomifi
     module Verification
       class AuthorizationsController < ::Decidim::ApplicationController
+        skip_before_action :store_current_location
+
         def new
           # Do enforce the permission here because it would cause
           # re-authorizations not to work as the authorization already exists.

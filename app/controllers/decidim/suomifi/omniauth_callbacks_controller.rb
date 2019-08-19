@@ -49,7 +49,10 @@ module Decidim
             "authorizations.create.success",
             scope: "decidim.suomifi.verification"
           )
-          return redirect_to decidim_verifications.authorizations_path
+          return redirect_to(
+            stored_location_for(resource || :user) ||
+            decidim_verifications.authorizations_path
+          )
         end
 
         # Normal authentication request, proceed with Decidim's internal logic.
