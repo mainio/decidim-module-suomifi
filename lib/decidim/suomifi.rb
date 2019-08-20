@@ -13,6 +13,8 @@ module Decidim
   module Suomifi
     include ActiveSupport::Configurable
 
+    @configured = false
+
     # :production - For Suomi.fi production environment
     # :test - For Suomi.fi test environment
     config_accessor :mode, instance_reader: false
@@ -53,6 +55,15 @@ module Decidim
     # Default is set to 0 minutes which means it will never expire.
     config_accessor :authorization_expiration do
       0.minutes
+    end
+
+    def self.configured?
+      @configured
+    end
+
+    def self.configure
+      @configured = true
+      super
     end
 
     def self.mode

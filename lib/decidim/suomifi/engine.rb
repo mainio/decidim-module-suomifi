@@ -39,6 +39,8 @@ module Decidim
       end
 
       initializer "decidim_suomifi.setup", before: "devise.omniauth" do
+        next unless Decidim::Suomifi.configured?
+
         # Configure the SAML OmniAuth strategy for Devise
         ::Devise.setup do |config|
           config.omniauth(
@@ -64,7 +66,9 @@ module Decidim
         end
       end
 
-      initializer "decidim_suomifi.omniauth_provider" do
+      initializer "decidim_suomifi.omniauth_provider", after: :load_config_initializers do
+        next unless Decidim::Suomifi.configured?
+
         Decidim::Suomifi::Engine.add_omniauth_provider
 
         # This also needs to run as a callback for the reloader because
