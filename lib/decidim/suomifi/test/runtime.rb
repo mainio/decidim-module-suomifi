@@ -35,12 +35,12 @@ module Decidim
           yield self
 
           # Setup the Suomi.fi OmniAuth strategy for Devise
-          ::Devise.setup do |config|
-            config.omniauth(
-              :suomifi,
-              Decidim::Suomifi.omniauth_settings
-            )
-          end
+          # ::Devise.setup do |config|
+          #   config.omniauth(
+          #     :suomifi,
+          #     Decidim::Suomifi.omniauth_settings
+          #   )
+          # end
         end
       end
     end
