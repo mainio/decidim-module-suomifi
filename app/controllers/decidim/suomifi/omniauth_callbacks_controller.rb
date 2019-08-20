@@ -179,7 +179,17 @@ module Decidim
         # gender which would not be correct.
         gender = nil
         date_of_birth = nil
-        if hetu.valid?
+
+        # Note that we cannot call hetu.valid? because it will also call
+        # `:valid_person_number?`. This checks that the HETU is in range 002-899
+        # which are the actual HETU codes stored in the population register
+        # system. The numbers above 899 are temporary codes, e.g. in situations
+        # when a person does not yet have a HETU. Temporary codes may be
+        # returned by the Suomi.fi endpoint e.g. in the testing mode. Regarding
+        # the information needs here, it does not matter whether the HETU is
+        # temporary or permanent.
+        valid_hetu = hetu.send(:valid_format?) && hetu.send(:valid_checksum?)
+        if valid_hetu
           gender = hetu.male? ? "m" : "f"
           # `.to_s` returns an ISO 8601 formatted string (YYYY-MM-DD for dates)
           date_of_birth = hetu.date_of_birth.to_s
