@@ -16,7 +16,9 @@ module Decidim
           root to: "authorizations#new"
         end
 
-        initializer "decidim_suomifi.verification_workflow" do
+        initializer "decidim_suomifi.verification_workflow", after: :load_config_initializers do
+          next unless Decidim::Suomifi.configured?
+
           # We cannot use the name `:suomifi` for the verification workflow
           # because otherwise the route namespace (decidim_suomifi) would
           # conflict with the main engine controlling the authentication flows.
