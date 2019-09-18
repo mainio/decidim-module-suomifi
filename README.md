@@ -132,6 +132,63 @@ This gem also provides a Suomi.fi sign in method which will automatically
 authorize the user accounts. In case the users already have an account, they
 can still authorize themselves using the Suomi.fi authorization.
 
+## Customization
+
+For some specific needs, you may need to store extra metadata for the Suomi.fi
+authorization or add new authorization configuration options for the
+authorization.
+
+This can be achieved by applying the following configuration to the module
+inside the initializer described above:
+
+```ruby
+# config/initializers/suomifi.rb
+
+Decidim::Suomifi.configure do |config|
+  # ... keep the default configuration as is ...
+  # Add this extra configuration:
+  config.workflow_configurator = lambda do |workflow|
+    # When expiration is set to 0 minutes, it will never expire.
+    workflow.expires_in = 0.minutes
+    workflow.action_authorizer = "CustomSuomifiActionAuthorizer"
+    workflow.options do |options|
+      options.attribute :custom_option, type: :string, required: false
+    end
+  end
+  config.metadata_collector_class = CustomSuomifiMetadataCollector
+end
+```
+
+For the workflow configuration options, please refer to the
+[decidim-verifications documentation](https://github.com/decidim/decidim/tree/master/decidim-verifications).
+
+For the custom metadata collector, please extend the default class as follows:
+
+```ruby
+# frozen_string_literal: true
+
+class CustomSuomifiMetadataCollector < Decidim::Suomifi::Verification::MetadataCollector
+  def metadata
+    base = super
+
+    base.tap do |data|
+      # You can access the SAML attributes using the `saml_attributes` accessor:
+      postal_code = saml_attributes[:permanent_domestic_address_postal_code]
+
+      # Or you can access the base attributes already defined through the
+      # default metadata collector:
+      postal_code = base[:postal_code]
+
+      unless postal_code.blank?
+        # This will actually add the data to the user's authorization metadata
+        # hash.
+        data[:extra] = "Custom data for: #{postal_code}"
+      end
+    end
+  end
+end
+```
+
 ## Contributing
 
 See [Decidim](https://github.com/decidim/decidim).
