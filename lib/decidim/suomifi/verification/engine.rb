@@ -26,7 +26,8 @@ module Decidim
           # this engine would not be found.
           Decidim::Verifications.register_workflow(:suomifi_eid) do |workflow|
             workflow.engine = Decidim::Suomifi::Verification::Engine
-            workflow.expires_in = Decidim::Suomifi.config.authorization_expiration
+
+            Decidim::Suomifi::Verification::Manager.configure_workflow(workflow)
           end
         end
 

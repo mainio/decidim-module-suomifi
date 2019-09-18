@@ -51,10 +51,21 @@ module Decidim
       {}
     end
 
-    # In case you want to set the authorization to expire.
-    # Default is set to 0 minutes which means it will never expire.
-    config_accessor :authorization_expiration do
-      0.minutes
+    # Allows customizing the authorization workflow e.g. for adding custom
+    # workflow options or configuring an action authorizer for the
+    # particular needs.
+    config_accessor :workflow_configurator do
+      lambda do |workflow|
+        # By default, expiration is set to 0 minutes which means it will
+        # never expire.
+        workflow.expires_in = 0.minutes
+      end
+    end
+
+    # Allows customizing how the authorization metadata gets collected from
+    # the SAML attributes passed from the authorization endpoint.
+    config_accessor :metadata_collector_class do
+      Decidim::Suomifi::Verification::MetadataCollector
     end
 
     def self.configured?
