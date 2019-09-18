@@ -15,22 +15,17 @@ describe Decidim::Suomifi::Verification::Engine do
   end
 
   it "registers the verification workflow" do
-    expiration = double
-    expect(Decidim::Suomifi.config).to receive(
-      :authorization_expiration
-    ).and_return(expiration)
     expect(Decidim::Verifications).to receive(
       :register_workflow
     ).with(:suomifi_eid) do |&block|
       workflow = double
       expect(workflow).to receive(:engine=).with(described_class)
-      expect(workflow).to receive(:expires_in=).with(expiration)
+      expect(workflow).to receive(:expires_in=).with(0.minutes)
 
       block.call(workflow)
     end
 
     run_initializer("decidim_suomifi.verification_workflow")
-    # Decidim::Verifications.register_workflow(:suomifi_eid) do |workflow|
   end
 
   describe "#load_seed" do
