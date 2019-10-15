@@ -335,7 +335,7 @@ module Decidim
               name: "suomifi_eid"
             )
             expect(authorization).to be_nil
-            expect(response).to redirect_to("/")
+            expect(response).to redirect_to("/users/auth/suomifi/spslo?RelayState=%2F")
             expect(flash[:alert]).to eq(
               "Another user has already been identified using this identity. Please sign out and sign in again directly using Suomi.fi."
             )
@@ -378,7 +378,7 @@ module Decidim
               name: "suomifi_eid"
             )
             expect(authorization).to be_nil
-            expect(response).to redirect_to("/")
+            expect(response).to redirect_to("/users/auth/suomifi/spslo?RelayState=%2F")
             expect(flash[:alert]).to eq(
               "Another user has already authorized themselves with the same identity."
             )

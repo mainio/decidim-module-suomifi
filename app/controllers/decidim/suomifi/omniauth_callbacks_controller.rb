@@ -13,6 +13,8 @@ module Decidim
       # This is called always after the user returns from the authentication
       # flow from the Suomi.fi identity provider.
       def suomifi
+        session["decidim-suomifi.signed_in"] = true
+
         if user_signed_in?
           # The user is most likely returning from an authorization request
           # because they are already signed in. In this case, add the
@@ -164,7 +166,15 @@ module Decidim
           "failure.#{failure_message_key}",
           scope: "decidim.suomifi.omniauth_callbacks"
         )
-        redirect_to stored_location_for(resource || :user) || decidim.root_path
+
+        redirect_path = stored_location_for(resource || :user) || decidim.root_path
+        if session.delete("decidim-suomifi.signed_in")
+          params = "?RelayState=#{CGI.escape(redirect_path)}"
+
+          return redirect_to user_suomifi_omniauth_spslo_path + params
+        end
+
+        redirect_to redirect_path
       end
 
       # Data that is stored against the authorization "permanently" (i.e. as

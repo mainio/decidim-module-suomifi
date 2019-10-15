@@ -31,7 +31,7 @@ describe Decidim::Suomifi::Engine do
     run_initializer("decidim_suomifi.mount_routes")
   end
 
-  it "adds the correct routes to the core engine" do
+  it "adds the correct callback and passthru routes to the core engine" do
     run_initializer("decidim_suomifi.mount_routes")
 
     %w(GET POST).each do |method|
@@ -54,6 +54,50 @@ describe Decidim::Suomifi::Engine do
         action: "suomifi"
       )
     end
+  end
+
+  it "adds the correct sign out routes to the core engine" do
+    %w(GET POST).each do |method|
+      expect(
+        Decidim::Core::Engine.routes.recognize_path(
+          "/users/auth/suomifi/slo",
+          method: method
+        )
+      ).to eq(
+        controller: "decidim/suomifi/sessions",
+        action: "slo"
+      )
+      expect(
+        Decidim::Core::Engine.routes.recognize_path(
+          "/users/auth/suomifi/spslo",
+          method: method
+        )
+      ).to eq(
+        controller: "decidim/suomifi/sessions",
+        action: "spslo"
+      )
+    end
+    %w(DELETE POST).each do |method|
+      expect(
+        Decidim::Core::Engine.routes.recognize_path(
+          "/users/sign_out",
+          method: method
+        )
+      ).to eq(
+        controller: "decidim/suomifi/sessions",
+        action: "destroy"
+      )
+    end
+
+    expect(
+      Decidim::Core::Engine.routes.recognize_path(
+        "/users/slo_callback",
+        method: "GET"
+      )
+    ).to eq(
+      controller: "decidim/suomifi/sessions",
+      action: "slo_callback"
+    )
   end
 
   it "configures the Suomi.fi omniauth strategy for Devise" do

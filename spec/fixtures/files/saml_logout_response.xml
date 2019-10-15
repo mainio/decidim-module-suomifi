@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<saml2p:LogoutResponse
+  Destination="http://1.lvh.me/users/auth/suomifi/slo"
+  ID="_916be58fd332fb8a47ca8783fd1c116b"
+  InResponseTo="_b6a69da0-04a2-0134-ea8a-0a2068490f7d"
+  IssueInstant="2019-08-15T09:06:57.452Z"
+  Version="2.0"
+  xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol">
+  <saml2:Issuer xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">https://testi.apro.tunnistus.fi/idp1</saml2:Issuer>
+  <saml2p:Status xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol">
+    <saml2p:StatusCode xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol" Value="urn:oasis:names:tc:SAML:2.0:status:Success" />
+    <saml2p:StatusMessage xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol">Successfully logged out from service</saml2p:StatusMessage>
+  </saml2p:Status>
+</saml2p:LogoutResponse>

@@ -25,6 +25,42 @@ module Decidim
             as: "user_suomifi_omniauth_callback",
             via: [:get, :post]
           )
+
+          # Add the SLO and SPSLO paths to be able to pass these requests to
+          # OmniAuth.
+          match(
+            "/users/auth/suomifi/slo",
+            to: "sessions#slo",
+            as: "user_suomifi_omniauth_slo",
+            via: [:get, :post]
+          )
+
+          match(
+            "/users/auth/suomifi/spslo",
+            to: "sessions#spslo",
+            as: "user_suomifi_omniauth_spslo",
+            via: [:get, :post]
+          )
+
+          # Manually map the sign out path in order to control the sign out
+          # flow through OmniAuth when the user signs out from the service.
+          # In these cases, the user needs to be also signed out from Suomi.fi
+          # which is handled by the OmniAuth strategy.
+          match(
+            "/users/sign_out",
+            to: "sessions#destroy",
+            as: "destroy_user_session",
+            via: [:delete, :post]
+          )
+
+          # This is the callback route after a returning from a successful sign
+          # out request through OmniAuth.
+          match(
+            "/users/slo_callback",
+            to: "sessions#slo_callback",
+            as: "slo_callback_user_session",
+            via: [:get]
+          )
         end
       end
 
