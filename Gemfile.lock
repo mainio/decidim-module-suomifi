@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    decidim-suomifi (0.18.0)
+    decidim-suomifi (0.18.1)
       decidim-core (~> 0.18.0)
       henkilotunnus (~> 1.1.0)
       omniauth-suomifi (~> 0.3.0)
