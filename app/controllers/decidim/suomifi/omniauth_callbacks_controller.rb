@@ -15,33 +15,18 @@ module Decidim
       def suomifi
         session["decidim-suomifi.signed_in"] = true
 
+        authenticator.validate!
+
         if user_signed_in?
           # The user is most likely returning from an authorization request
           # because they are already signed in. In this case, add the
           # authorization and redirect the user back to the authorizations view.
 
           # Make sure the user has an identity created in order to aid future
-          # Suomi.fi sign ins.
-          identity = current_user.identities.find_by(
-            organization: current_organization,
-            provider: oauth_data[:provider],
-            uid: user_identifier
-          )
-          unless identity
-            # Check that the identity is not already bound to another user.
-            id = Decidim::Identity.find_by(
-              organization: current_organization,
-              provider: oauth_data[:provider],
-              uid: user_identifier
-            )
-            return fail_authorize(:identity_bound_to_other_user) if id
-
-            current_user.identities.create!(
-              organization: current_organization,
-              provider: oauth_data[:provider],
-              uid: user_identifier
-            )
-          end
+          # Suomi.fi sign ins. In case this fails, it will raise a
+          # Decidim::Suomifi::Authentication::IdentityBoundToOtherUserError
+          # which is handled below.
+          authenticator.identify_user!(current_user)
 
           # Add the authorization for the user
           return fail_authorize unless authorize_user(current_user)
@@ -59,6 +44,10 @@ module Decidim
 
         # Normal authentication request, proceed with Decidim's internal logic.
         send(:create)
+      rescue Decidim::Suomifi::Authentication::ValidationError => e
+        fail_authorize(e.validation_key)
+      rescue Decidim::Suomifi::Authentication::IdentityBoundToOtherUserError
+        fail_authorize(:identity_bound_to_other_user)
       end
 
       def failure
@@ -134,31 +123,9 @@ module Decidim
       private
 
       def authorize_user(user)
-        authorization = Decidim::Authorization.find_by(
-          name: "suomifi_eid",
-          unique_id: user_signature
-        )
-        if authorization
-          return nil if authorization.user != user
-        else
-          authorization = Decidim::Authorization.find_or_initialize_by(
-            name: "suomifi_eid",
-            user: user
-          )
-        end
-
-        authorization.attributes = {
-          unique_id: user_signature,
-          metadata: authorization_metadata
-        }
-        authorization.save!
-
-        # This will update the "granted_at" timestamp of the authorization which
-        # will postpone expiration on re-authorizations in case the
-        # authorization is set to expire (by default it will not expire).
-        authorization.grant!
-
-        authorization
+        authenticator.authorize_user!(user)
+      rescue Decidim::Suomifi::Authentication::AuthorizationBoundToOtherUserError
+        nil
       end
 
       def fail_authorize(failure_message_key = :already_authorized)
@@ -177,12 +144,6 @@ module Decidim
         redirect_to redirect_path
       end
 
-      # Data that is stored against the authorization "permanently" (i.e. as
-      # long as the authorization is valid).
-      def authorization_metadata
-        metadata_collector.metadata
-      end
-
       # Needs to be specifically defined because the core engine routes are not
       # all properly loaded for the view and this helper method is needed for
       # defining the omniauth registration form's submit path.
@@ -193,84 +154,18 @@ module Decidim
       # Private: Create form params from omniauth hash
       # Since we are using trusted omniauth data we are generating a valid signature.
       def user_params_from_oauth_hash
-        return nil if oauth_data.empty?
-        return nil if saml_attributes.empty?
-        return nil if user_identifier.blank?
-
-        {
-          provider: oauth_data[:provider],
-          uid: user_identifier,
-          name: user_full_name,
-          # The nickname is automatically "parametrized" by Decidim core from
-          # the name string, i.e. it will be in correct format.
-          nickname: user_full_name,
-          oauth_signature: user_signature,
-          avatar_url: oauth_data[:info][:image],
-          raw_data: oauth_hash
-        }
+        authenticator.user_params_from_oauth_hash
       end
 
-      def user_full_name
-        return oauth_data[:info][:name] if oauth_data[:info][:name]
-
-        @user_full_name ||= begin
-          first_name = begin
-            saml_attributes[:given_name] ||
-              saml_attributes[:first_names] ||
-              saml_attributes[:eidas_first_names]
-          end
-          last_name = begin
-            saml_attributes[:last_name] ||
-              saml_attributes[:eidas_family_name]
-          end
-
-          "#{first_name} #{last_name}"
-        end
-      end
-
-      def user_signature
-        @user_signature ||= OmniauthRegistrationForm.create_signature(
-          oauth_data[:provider],
-          user_identifier
-        )
-      end
-
-      # See the omniauth-suomi gem's notes about the UID. It should be always
-      # unique per person as long as it can be determined from the user's data.
-      # This consists of one of the following in this order:
-      # - The person's electronic identifier (SATU ID, sähköinen asiointitunnus)
-      # - The person's personal identifier (HETU ID, henkilötunnus) in hashed
-      #   format
-      # - The person's eIDAS personal identifier (eIDAS PID) in hashed format
-      # - The SAML NameID in the SAML response in case no unique personal data
-      #   is available as defined above
-      def user_identifier
-        @user_identifier ||= oauth_data[:uid]
-      end
-
-      def person_identifier_digest
-        metadata_collector.person_identifier_digest
-      end
-
-      def metadata_collector
-        @metadata_collector ||= Decidim::Suomifi::Verification::Manager.metadata_collector_for(
-          saml_attributes
+      def authenticator
+        @authenticator ||= Decidim::Suomifi.authenticator_for(
+          current_organization,
+          oauth_hash
         )
       end
 
       def verified_email
-        @verified_email ||= begin
-          if saml_attributes[:email]
-            saml_attributes[:email]
-          elsif Decidim::Suomifi.auto_email_domain
-            domain = Decidim::Suomifi.auto_email_domain
-            "suomifi-#{person_identifier_digest}@#{domain}"
-          end
-        end
-      end
-
-      def saml_attributes
-        @saml_attributes ||= oauth_hash[:extra][:saml_attributes]
+        authenticator.verified_email
       end
     end
   end

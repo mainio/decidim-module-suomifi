@@ -6,6 +6,7 @@ require "henkilotunnus"
 
 require_relative "suomifi/version"
 require_relative "suomifi/engine"
+require_relative "suomifi/authentication"
 require_relative "suomifi/verification"
 require_relative "suomifi/mail_interceptors"
 
@@ -62,6 +63,12 @@ module Decidim
       end
     end
 
+    # Allows customizing parts of the authentication flow such as validating
+    # the authorization data before allowing the user to be authenticated.
+    config_accessor :authenticator_class do
+      Decidim::Suomifi::Authentication::Authenticator
+    end
+
     # Allows customizing how the authorization metadata gets collected from
     # the SAML attributes passed from the authorization endpoint.
     config_accessor :metadata_collector_class do
@@ -75,6 +82,10 @@ module Decidim
     def self.configure
       @configured = true
       super
+    end
+
+    def self.authenticator_for(organization, oauth_hash)
+      authenticator_class.new(organization, oauth_hash)
     end
 
     def self.mode
