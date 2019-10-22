@@ -342,6 +342,21 @@ module Decidim
           end
         end
 
+        context "when no SAML attributes are returned from the IdP" do
+          let(:saml_attributes_base) { {} }
+
+          it "prevents the authentication with correct error message" do
+            omniauth_callback_get
+
+            expect(User.count).to eq(0)
+            expect(Authorization.count).to eq(0)
+            expect(Identity.count).to eq(0)
+            expect(flash[:alert]).to eq(
+              "You cannot be authenticated through Suomi.fi."
+            )
+          end
+        end
+
         context "when another user is already authorized with the same identity" do
           let(:another_user) do
             create(:user, :confirmed, organization: organization)
