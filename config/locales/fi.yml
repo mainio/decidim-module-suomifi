@@ -10,6 +10,7 @@ fi:
           already_authorized: Toinen käyttäjä on tunnistanut itsensä jo samalla henkilöllisyydellä.
           conditions: Tunnistuspyyntöä ei käsitelty sallitun aikarajan sisällä. Yritä uudestaan.
           identity_bound_to_other_user: Toinen käyttäjä on jo tunnistanut itsensä tällä henkilöllisyydellä. Kirjaudu ulos ja kirjaudu uudestaan sisään käyttäen suoraan Suomi.fi-tunnistusta.
+          invalid_data: Sinua ei voida tunnistaa Suomi.fi-palvelun avulla.
           session_expiration: Tunnistusistunto vanhentui. Yritä uudestaan.
           success_status: Tunnistus epäonnistui tai peruutettiin. Yritä uudestaan.
       verification:
