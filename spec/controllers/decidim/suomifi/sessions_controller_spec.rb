@@ -37,20 +37,15 @@ module Decidim
         end
 
         context "when there is an active Suomi.fi sign in" do
-          let(:session) { {} }
-
-          before do
-            # rubocop:disable RSpec/AnyInstance
-            allow_any_instance_of(described_class).to receive(:session).and_return(session)
-            # rubocop:enable RSpec/AnyInstance
-
-            allow(session).to receive(:delete).with(
-              "decidim-suomifi.signed_in"
-            ).and_return(true)
-          end
-
           it "signs out the user through the Suomi.fi SLO" do
-            post "/users/sign_out"
+            # Generate a dummy session by requesting the home page.
+            get "/"
+            request.session["decidim-suomifi.signed_in"] = true
+
+            post "/users/sign_out", env: {
+              "rack.session" => request.session,
+              "rack.session.options" => request.session.options
+            }
 
             redirect_path = CGI.escape("/users/slo_callback?success=1")
             expect(response).to redirect_to("/users/auth/suomifi/spslo?RelayState=#{redirect_path}")
@@ -78,16 +73,15 @@ module Decidim
         end
 
         it "responds successfully to a SAML request" do
-          session = {
-            "saml_transaction_id" => "_274a0148-44ad-4238-bdb0-e56c971ae3bc",
-            "saml_uid" => "AAdzZWNyZXQxfxVUqsT8k/OSMQF/s80N/8TyMb5MERaTUMrYtjpqQV/yStP+CEUegeoHqAVnB9LLOEz2XkE5ZS09VT/4FoAVyonc1z8p5TYIAQI1Hi4wAzINh7OTA6szITMUwP5GfFkW7lGQ0avmRSsr3LODiNGC1zDguiSTX0DtQ9Uq5kQ5nYLz+rJO"
+          # Generate a dummy session by requesting the home page.
+          get "/"
+          request.session["saml_transaction_id"] = "_274a0148-44ad-4238-bdb0-e56c971ae3bc"
+          request.session["saml_uid"] = "AAdzZWNyZXQxfxVUqsT8k/OSMQF/s80N/8TyMb5MERaTUMrYtjpqQV/yStP+CEUegeoHqAVnB9LLOEz2XkE5ZS09VT/4FoAVyonc1z8p5TYIAQI1Hi4wAzINh7OTA6szITMUwP5GfFkW7lGQ0avmRSsr3LODiNGC1zDguiSTX0DtQ9Uq5kQ5nYLz+rJO"
+
+          get "/users/auth/suomifi/slo", params: { SAMLRequest: saml_request }, env: {
+            "rack.session" => request.session,
+            "rack.session.options" => request.session.options
           }
-
-          # rubocop:disable RSpec/AnyInstance
-          allow_any_instance_of(::OmniAuth::Strategies::Suomifi).to receive(:session).and_return(session)
-          # rubocop:enable RSpec/AnyInstance
-
-          get "/users/auth/suomifi/slo", params: { SAMLRequest: saml_request }
 
           expect(response).to be_redirect
           expect(response.location).to match %r{https://testi.apro.tunnistus.fi/idp/profile/SAML2/Redirect/SLO}
@@ -100,6 +94,40 @@ module Decidim
 
           expect(response).to be_redirect
           expect(response.location).to match %r{https://testi.apro.tunnistus.fi/idp/profile/SAML2/Redirect/SLO}
+        end
+
+        it "preserves the flash messages after destroying the session" do
+          # Generate a dummy session by requesting the home page.
+          get "/"
+
+          # Set some arbitrary session variables to pass to the next request
+          request.session["test"] = "this should be removed"
+          request.session["warden.user.user.key"] = [[123], "abc"]
+          request.session["warden.user.user.session"] = { "last_request_at" => Time.now.to_i }
+
+          # See how the flash value is converted to a session variable:
+          # https://github.com/rails/rails/blob/12aabe2ee1d97be7a0ca093290a98e21a10d909c/actionpack/lib/action_dispatch/middleware/flash.rb#L138
+          request.session["flash"] = {
+            "discard" => [],
+            "flashes" => {
+              alert: "Alert message"
+            }
+          }
+
+          post "/users/auth/suomifi/spslo", env: {
+            "rack.session" => request.session,
+            "rack.session.options" => request.session.options
+          }
+
+          # Check that all other session keys were removed along with the logout
+          # request before redirecting the user.
+          expect(request.session).not_to include(
+            "test",
+            "warden.user.user.key",
+            "warden.user.user.session"
+          )
+          expect(request.session).to include("flash")
+          expect(flash[:alert]).to eq("Alert message")
         end
       end
 
