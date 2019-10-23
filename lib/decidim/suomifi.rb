@@ -47,6 +47,18 @@ module Decidim
     # The private key file for the application
     config_accessor :private_key_file
 
+    # Defines how the session gets cleared when the OmniAuth strategy logs the
+    # user out. This has been customized to preserve the flash messages in the
+    # session after the session is destroyed.
+    config_accessor :idp_slo_session_destroy do
+      proc do |_env, session|
+        flash = session["flash"]
+        result = session.clear
+        session["flash"] = flash if flash
+        result
+      end
+    end
+
     # Extra configuration for the omniauth strategy
     config_accessor :extra do
       {}
@@ -122,7 +134,8 @@ module Decidim
         scope_of_data: scope_of_data,
         sp_entity_id: sp_entity_id,
         certificate: certificate,
-        private_key: private_key
+        private_key: private_key,
+        idp_slo_session_destroy: idp_slo_session_destroy
       }
       settings.merge!(config.extra) if config.extra.is_a?(Hash)
       settings

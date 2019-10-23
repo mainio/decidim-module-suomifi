@@ -112,6 +112,7 @@ describe Decidim::Suomifi do
     let(:sp_entity_id) { double }
     let(:certificate) { double }
     let(:private_key) { double }
+    let(:idp_slo_session_destroy) { double }
     let(:extra) { { extra1: "abc", extra2: 123 } }
 
     it "returns the expected omniauth configuration hash" do
@@ -120,6 +121,7 @@ describe Decidim::Suomifi do
       allow(subject).to receive(:sp_entity_id).and_return(sp_entity_id)
       allow(subject).to receive(:certificate).and_return(certificate)
       allow(subject).to receive(:private_key).and_return(private_key)
+      allow(subject).to receive(:idp_slo_session_destroy).and_return(idp_slo_session_destroy)
       allow(config).to receive(:extra).and_return(extra)
 
       expect(subject.omniauth_settings).to include(
@@ -128,6 +130,7 @@ describe Decidim::Suomifi do
         sp_entity_id: sp_entity_id,
         certificate: certificate,
         private_key: private_key,
+        idp_slo_session_destroy: idp_slo_session_destroy,
         extra1: "abc",
         extra2: 123
       )

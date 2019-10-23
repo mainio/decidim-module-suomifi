@@ -115,7 +115,8 @@ describe Decidim::Suomifi::Engine do
         assertion_consumer_service_url: "http://1.lvh.me/users/auth/suomifi/callback",
         idp_cert_multi: {
           signing: [cs.sign_certificate.to_pem]
-        }
+        },
+        idp_slo_session_destroy: instance_of(Proc)
       )
       block.call(config)
     end
