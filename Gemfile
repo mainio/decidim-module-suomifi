@@ -20,7 +20,7 @@ gem "puma", "~> 3.12"
 gem "uglifier", "~> 4.1"
 
 group :development, :test do
-  gem "byebug", "~> 10.0", platform: :mri
+  gem "byebug", "~> 11.0", platform: :mri
 
   gem "decidim-dev", Decidim::Suomifi::DECIDIM_VERSION
 end
