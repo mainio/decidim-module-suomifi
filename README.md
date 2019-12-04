@@ -59,6 +59,9 @@ You need to set the following configuration options inside the initializer:
   sent to Suomi.fi.
 - `:private_key_file` - Path to the local private key (corresponding to the
   certificate). Will be used to decrypt messages coming from Suomi.fi.
+
+Optionally you can also configure the module with the following options:
+
 - `:auto_email_domain` - Defines the auto-email domain in case the user's domain
   is not stored at Suomi.fi. In case this is not set (default), emails will not
   be auto-generated and users will need to enter them manually in case Suomi.fi
@@ -67,6 +70,14 @@ You need to set the following configuration options inside the initializer:
     `suomifi-756be91097ac490961fd04f121cb9550@example.org`. The email will
     always have the `suomifi-` prefix and the domain part is defined by the
     configuration option.
+  * In case this is not defined, the organization's host will be used as the
+    default.
+- `:use_suomifi_email` - Defines whether the emails stored in Suomi.fi should
+  be used for the user accounts if they are available. Note that not all people
+  have an email address stored in the Suomi.fi database and not everyone keeps
+  it up to date. Another problem with this is that some people may have an old
+  or incorrectly written email address stored in Suomi.fi that may cause wrong
+  email addresses to be used for the use accounts.
 
 For more information about these options and possible other options, please
 refer to the [`omniauth-suomifi`](https://github.com/mainio/omniauth-suomifi)
