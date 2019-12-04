@@ -27,11 +27,27 @@ module Decidim
       :medium_extensive
     end
 
-    # Defines the auto email domain in case the person's email address is not
-    # stored in the Suomi.fi database. In case this is defined, the user will
-    # be automatically assigned an email such as
-    # "suomifi-identifier@auto-email-domain.fi" upon their registration.
+    # Defines the email domain for the auto-generated email addresses for the
+    # user accounts. You can also use the person's own email address possibly
+    # stored in the Suomi.fi database with the option `use_suomifi_email`. Not
+    # all people have email address stored in Suomi.fi and some people may have
+    # incorrect email address stored there.
+    #
+    # In case this is defined, the user will be automatically assigned an email
+    # such as "suomifi-identifier@auto-email-domain.fi" upon their registration.
+    #
+    # In case this is not defined, the default is the organization's domain.
     config_accessor :auto_email_domain
+
+    # Defines whether to use the person's email address stored in the Suomi.fi
+    # database for the user account. Some people do not actively update these
+    # email addresses and some people may have a wrong email address stored in
+    # the Suomi.fi database which can belong to another person in the worst case
+    # scenario which can cause confusion among the participants. Use this option
+    # with caution!
+    config_accessor :use_suomifi_email do
+      false
+    end
 
     config_accessor :sp_entity_id, instance_reader: false
 
