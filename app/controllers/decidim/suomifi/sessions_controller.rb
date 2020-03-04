@@ -32,6 +32,17 @@ module Decidim
         super
       end
 
+      def sign_out(resource_or_scope = nil)
+        result = super
+
+        # Because of this change in the core, we have to manually clear the
+        # `@real_user` instance variable after sign out:
+        # https://github.com/decidim/decidim/pull/5533
+        @real_user = nil
+
+        result
+      end
+
       def slo
         # This is handled already by omniauth
         redirect_to decidim.root_path
