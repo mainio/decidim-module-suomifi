@@ -32,6 +32,8 @@ module Decidim
         super
       end
 
+      # This can be removed after the following PR is merged to the core:
+      # https://github.com/decidim/decidim/pull/5823
       def sign_out(resource_or_scope = nil)
         result = super
 
