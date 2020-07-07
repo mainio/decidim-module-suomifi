@@ -93,7 +93,7 @@ module Decidim
           def handle_line(line)
             if inside_config && line =~ /^  omniauth:/
               self.inside_omniauth = true
-            elsif inside_omniauth && line =~ /^(  )?[a-z]+/
+            elsif inside_omniauth && (line =~ /^(  )?[a-z]+/ || line =~ /^#.*/)
               inject_suomifi_config
               self.inside_omniauth = false
             end
@@ -110,6 +110,9 @@ module Decidim
             elsif line =~ /^development:/
               self.inside_config = true
               self.config_branch = :development
+            elsif line =~ /^test:/
+              self.inside_config = true
+              self.config_branch = :test
             end
           end
 
@@ -120,7 +123,7 @@ module Decidim
 
           def inject_suomifi_config
             @final += "    suomifi:\n"
-            if config_branch == :development
+            if %i(development test).include?(config_branch)
               @final += "      enabled: true\n"
               @final += "      mode: test\n"
             else
