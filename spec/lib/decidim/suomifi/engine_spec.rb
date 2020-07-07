@@ -160,48 +160,12 @@ describe Decidim::Suomifi::Engine do
     run_initializer("decidim_suomifi.setup")
   end
 
-  it "calls the add_omniauth_provider method correctly" do
-    expect(described_class).to receive(:add_omniauth_provider)
-    expect(ActiveSupport::Reloader).to receive(:to_run) do |&block|
-      expect(described_class).to receive(:add_omniauth_provider)
-      block.call
-    end
-
-    run_initializer("decidim_suomifi.omniauth_provider")
-  end
-
   it "adds the mail interceptor" do
     expect(ActionMailer::Base).to receive(:register_interceptor).with(
       Decidim::Suomifi::MailInterceptors::GeneratedRecipientsInterceptor
     )
 
     run_initializer("decidim_suomifi.mail_interceptors")
-  end
-
-  describe "#add_omniauth_provider" do
-    it "adds the :suomifi OmniAuth provider" do
-      # Reset the constant
-      original_providers = [:facebook, :twitter, :google_oauth2]
-      ::Decidim::User.send(:remove_const, :OMNIAUTH_PROVIDERS)
-      ::Decidim::User.const_set(:OMNIAUTH_PROVIDERS, original_providers)
-
-      expected = original_providers + [:suomifi]
-
-      expect(::Decidim::User).to receive(:remove_const).once.with(
-        :OMNIAUTH_PROVIDERS
-      ).and_call_original
-      expect(::Decidim::User).to receive(:const_set).once.with(
-        :OMNIAUTH_PROVIDERS,
-        expected
-      ).and_call_original
-
-      # Make sure that the constant monkey patch is only done once even when the
-      # to_prepare hooks are run multiple times.
-      described_class.add_omniauth_provider
-      described_class.add_omniauth_provider
-
-      expect(::Decidim::User::OMNIAUTH_PROVIDERS).to eq(expected)
-    end
   end
 
   def run_initializer(initializer_name)
