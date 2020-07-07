@@ -102,35 +102,10 @@ module Decidim
         end
       end
 
-      initializer "decidim_suomifi.omniauth_provider", after: :load_config_initializers do
-        next unless Decidim::Suomifi.configured?
-
-        Decidim::Suomifi::Engine.add_omniauth_provider
-
-        # This also needs to run as a callback for the reloader because
-        # otherwise the suomifi OmniAuth routes would not be added to the core
-        # engine because its routes are reloaded before e.g. the to_prepare hook
-        # runs in this engine. The OmniAuth provider needs to be added before
-        # the core routes are reloaded.
-        ActiveSupport::Reloader.to_run do
-          Decidim::Suomifi::Engine.add_omniauth_provider
-        end
-      end
-
       initializer "decidim_suomifi.mail_interceptors" do
         ActionMailer::Base.register_interceptor(
           MailInterceptors::GeneratedRecipientsInterceptor
         )
-      end
-
-      def self.add_omniauth_provider
-        # Add :suomifi to the Decidim omniauth providers
-        providers = ::Decidim::User::OMNIAUTH_PROVIDERS
-        unless providers.include?(:suomifi)
-          providers << :suomifi
-          ::Decidim::User.send(:remove_const, :OMNIAUTH_PROVIDERS)
-          ::Decidim::User.const_set(:OMNIAUTH_PROVIDERS, providers)
-        end
       end
     end
   end
