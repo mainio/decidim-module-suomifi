@@ -19,3 +19,8 @@ fi:
             success: Sinut on onnistuneesti tunnistettu Suomi.fi-palvelun avulla
           destroy:
             success: Varmennus tyhjennetty onnistuneesti.
+    system:
+      organizations:
+        omniauth_settings:
+          mpassid:
+            mode: Tila

@@ -19,3 +19,8 @@ sv:
             success: Du har godkänts med Suomi.fi
           destroy:
             success: Tillståndet återställs efterhand.
+    system:
+      organizations:
+        omniauth_settings:
+          mpassid:
+            mode: Läge
