@@ -20,3 +20,8 @@ en:
             success: You have been successfully authorized through Suomi.fi
           destroy:
             success: Authorization sucessfully reset.
+    system:
+      organizations:
+        omniauth_settings:
+          mpassid:
+            mode: Mode
