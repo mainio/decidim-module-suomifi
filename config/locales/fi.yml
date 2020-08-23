@@ -23,7 +23,7 @@ fi:
       organizations:
         omniauth_settings:
           suomifi:
-            certificate_file: Certificate file
-            entity_id: Entity ID
-            mode: Mode
-            private_key_file: Private key file
+            certificate_file: Sertifikaatin tiedosto
+            entity_id: Palvelun ID-tunniste (Entity ID)
+            mode: Tila
+            private_key_file: Yksityisen avaimen tiedosto
