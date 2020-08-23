@@ -310,10 +310,10 @@ GEM
       cells (>= 4.1.6, < 5.0.0)
     charlock_holmes (0.7.7)
     childprocess (3.0.0)
-    codecov (0.1.17)
+    codecov (0.2.7)
+      colorize
       json
       simplecov
-      url
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
     coffee-rails (5.0.0)
@@ -323,6 +323,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
+    colorize (0.8.1)
     concurrent-ruby (1.1.6)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
@@ -734,7 +735,6 @@ GEM
       unf_ext
     unf_ext (0.0.7.7)
     unicode-display_width (1.6.1)
-    url (0.3.2)
     valid_email2 (2.3.1)
       activemodel (>= 3.2)
       mail (~> 2.5)
