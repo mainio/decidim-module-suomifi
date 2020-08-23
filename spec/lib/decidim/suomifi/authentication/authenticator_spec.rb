@@ -41,6 +41,18 @@ describe Decidim::Suomifi::Authentication::Authenticator do
       it "returns the email from SAML attributes" do
         expect(subject.verified_email).to eq("user@example.org")
       end
+
+      context "and Suomi.fi emails are disabled" do
+        let(:saml_attributes) { { email: "user@example.org", national_identification_number: "150785-5843" } }
+
+        before do
+          allow(Decidim::Suomifi).to receive(:use_suomifi_email).and_return(false)
+        end
+
+        it "auto-creates the email using the known pattern" do
+          expect(subject.verified_email).to match(/suomifi-[a-z0-9]{32}@1.lvh.me/)
+        end
+      end
     end
 
     context "when email is not available in the SAML attributes" do
@@ -48,6 +60,16 @@ describe Decidim::Suomifi::Authentication::Authenticator do
 
       it "auto-creates the email using the known pattern" do
         expect(subject.verified_email).to match(/suomifi-[a-z0-9]{32}@1.lvh.me/)
+      end
+
+      context "and auto_email_domain is not defined" do
+        before do
+          allow(Decidim::Suomifi).to receive(:auto_email_domain).and_return(nil)
+        end
+
+        it "auto-creates the email using the known pattern" do
+          expect(subject.verified_email).to match(/suomifi-[a-z0-9]{32}@#{organization.host}/)
+        end
       end
     end
   end

@@ -20,3 +20,11 @@ en:
             success: You have been successfully authorized through Suomi.fi
           destroy:
             success: Authorization sucessfully reset.
+    system:
+      organizations:
+        omniauth_settings:
+          suomifi:
+            certificate_file: Certificate file
+            entity_id: Entity ID
+            mode: Mode
+            private_key_file: Private key file

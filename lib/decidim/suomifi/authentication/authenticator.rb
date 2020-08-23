@@ -13,10 +13,10 @@ module Decidim
 
         def verified_email
           @verified_email ||= begin
-            if saml_attributes[:email]
+            if Decidim::Suomifi.use_suomifi_email && saml_attributes[:email]
               saml_attributes[:email]
-            elsif Decidim::Suomifi.auto_email_domain
-              domain = Decidim::Suomifi.auto_email_domain
+            else
+              domain = Decidim::Suomifi.auto_email_domain || organization.host
               "suomifi-#{person_identifier_digest}@#{domain}"
             end
           end
