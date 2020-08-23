@@ -19,3 +19,11 @@ fi:
             success: Sinut on onnistuneesti tunnistettu Suomi.fi-palvelun avulla
           destroy:
             success: Varmennus tyhjennetty onnistuneesti.
+    system:
+      organizations:
+        omniauth_settings:
+          suomifi:
+            certificate_file: Certificate file
+            entity_id: Entity ID
+            mode: Mode
+            private_key_file: Private key file
