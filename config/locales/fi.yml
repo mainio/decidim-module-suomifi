@@ -22,5 +22,8 @@ fi:
     system:
       organizations:
         omniauth_settings:
-          mpassid:
+          suomifi:
+            certificate_file: Sertifikaatin tiedosto
+            entity_id: Palvelun ID-tunniste (Entity ID)
             mode: Tila
+            private_key_file: Yksityisen avaimen tiedosto

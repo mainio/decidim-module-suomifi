@@ -22,5 +22,8 @@ sv:
     system:
       organizations:
         omniauth_settings:
-          mpassid:
+          suomifi:
+            certificate_file: Certifikatfil
+            entity_id: Entitet ID (Entity ID)
             mode: Läge
+            private_key_file: Privat nyckel fil
