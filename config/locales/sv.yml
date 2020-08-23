@@ -19,3 +19,11 @@ sv:
             success: Du har godkänts med Suomi.fi
           destroy:
             success: Tillståndet återställs efterhand.
+    system:
+      organizations:
+        omniauth_settings:
+          suomifi:
+            certificate_file: Certificate file
+            entity_id: Entity ID
+            mode: Mode
+            private_key_file: Private key file
