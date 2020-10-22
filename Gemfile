@@ -16,7 +16,7 @@ DECIDIM_VERSION = { github: "decidim/decidim", branch: "develop" }
 gem "decidim", DECIDIM_VERSION
 gem "decidim-suomifi", path: "."
 
-gem "omniauth-suomifi", "~> 0.3.0"
+gem "omniauth-suomifi", "~> 0.4.0"
 
 gem "bootsnap", "~> 1.4"
 gem "puma", "~> 4.3.3"
