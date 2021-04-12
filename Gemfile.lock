@@ -873,7 +873,6 @@ DEPENDENCIES
   listen (~> 3.1)
   omniauth-suomifi (~> 0.5.0)
   puma (>= 5.0.0)
-  rails (= 5.2.5)
   rubocop-faker
   rubocop-performance (~> 1.6.0)
   spring (~> 2.0)
