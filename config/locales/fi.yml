@@ -27,3 +27,8 @@ fi:
             entity_id: Palvelun ID-tunniste (Entity ID)
             mode: Tila
             private_key_file: Yksityisen avaimen tiedosto
+    verifications:
+      authorizations:
+        first_login:
+          actions:
+            suomifi_eid: Suomifi eid
