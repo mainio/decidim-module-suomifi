@@ -23,12 +23,6 @@ fi:
       organizations:
         omniauth_settings:
           suomifi:
-<<<<<<< HEAD
-            certificate_file: Sertifikaatin tiedosto
-            entity_id: Palvelun ID-tunniste (Entity ID)
-            mode: Tila
-            private_key_file: Yksityisen avaimen tiedosto
-=======
             certificate_file: Certificate file
             entity_id: Entity ID
             mode: Tila
@@ -38,4 +32,3 @@ fi:
         first_login:
           actions:
             suomifi_eid: Suomifi eid
->>>>>>> develop
