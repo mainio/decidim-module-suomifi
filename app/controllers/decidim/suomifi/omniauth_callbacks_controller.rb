@@ -31,10 +31,11 @@ module Decidim
           # Add the authorization for the user
           return fail_authorize unless authorize_user(current_user)
 
-          # Forget user
+          # Forget user's "remember me"
           current_user.forget_me!
           cookies.delete :remember_user_token, domain: current_organization.host
           cookies.delete :remember_admin_token, domain: current_organization.host
+          cookies.update response.cookies
 
           # Show the success message and redirect back to the authorizations
           flash[:notice] = t(

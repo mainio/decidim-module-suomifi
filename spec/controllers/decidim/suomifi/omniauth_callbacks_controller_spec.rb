@@ -254,7 +254,6 @@ module Decidim
 
             it "forgets the user" do
               omniauth_callback_get
-              # current_user = warden.authenticate(scope: :user)
               expect(Decidim::User.find(confirmed_user.id).remember_created_at).to eq(nil)
             end
           end
