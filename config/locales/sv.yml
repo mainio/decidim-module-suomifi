@@ -27,3 +27,8 @@ sv:
             entity_id: Entitet ID (Entity ID)
             mode: Läge
             private_key_file: Privat nyckel fil
+    verifications:
+      authorizations:
+        first_login:
+          actions:
+            suomifi_eid: Suomifi eid
