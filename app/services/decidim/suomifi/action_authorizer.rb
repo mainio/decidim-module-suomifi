@@ -74,14 +74,14 @@ module Decidim
       end
 
       def voted_physically?
-        foo = Decidim::Authorization.exists?(
-          [
-            "name =? AND metadata->>'pin_digest' =?",
-            "tampere_documents_authorization_handler",
-            authorization.metadata["pin_digest"]
-          ]
-        )
-        raise foo.inspect
+        return false if other_authorization_handlers.blank?
+
+        other_authorization_handlers.each do |authorization_handler|
+          Decidim::Authorization.where(name: authorization_handler).find_each do |auth|
+            return true if auth.metadata["pin_digest"] == authorization.metadata["pin_digest"]
+          end
+        end
+        false
       end
 
       def authorized_municipality_allowed?

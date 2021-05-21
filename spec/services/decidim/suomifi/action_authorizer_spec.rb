@@ -37,6 +37,12 @@ describe Decidim::Suomifi::ActionAuthorizer do
     )
   end
 
+  context "when everything is OK" do
+    it "returns status_code and data" do
+      expect(subject.authorize).to eq([:ok, {}])
+    end
+  end
+
   context "when the user is from a wrong municipality" do
     let(:municipality) { "853" }
 
