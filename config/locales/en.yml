@@ -3,6 +3,10 @@ en:
     authorization_handlers:
       suomifi_eid:
         explanation: Identify yourself using the Suomi.fi e-Identification service.
+        fields:
+          minimum_age: Minimum age
+          allowed_municipalities: Allowed municipalities
+          other_authorization_handlers: Other authorization handlers
         name: Suomi.fi e-Identification
     suomifi:
       omniauth_callbacks:
