@@ -5,7 +5,7 @@ require "spec_helper"
 describe Decidim::Suomifi::ActionAuthorizer do
   subject { described_class.new(authorization, options, component, resource) }
 
-  let(:organization) { create(:organization, available_locales: [:fi, :en]) }
+  let(:organization) { create(:organization) }
   let(:process) { create(:participatory_process, organization: organization) }
   let(:component) { create(:component, manifest_name: "budgets", participatory_space: process) }
   let(:resource) { nil }
