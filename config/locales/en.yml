@@ -1,4 +1,3 @@
----
 en:
   decidim:
     authorization_handlers:
@@ -28,3 +27,8 @@ en:
             entity_id: Entity ID
             mode: Mode
             private_key_file: Private key file
+    verifications:
+      authorizations:
+        first_login:
+          actions:
+            suomifi_eid: Suomifi eid
