@@ -34,7 +34,7 @@ jobs:
         with:
           fetch-depth: 1
       - uses: ruby/setup-ruby@v1
-        with:zz
+        with:
           bundler-cache: true
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
