@@ -8,6 +8,10 @@ en:
           allowed_municipalities: Allowed municipalities
           other_authorization_handlers: Other authorization handlers
         name: Suomi.fi e-Identification
+    authorization_modals:
+      content:
+        incomplete:
+          ok: Ok
     suomifi:
       omniauth_callbacks:
         failure:
@@ -36,3 +40,8 @@ en:
         first_login:
           actions:
             suomifi_eid: Suomifi eid
+  suomifi_action_authorizer:
+    restrictions:
+      disallowed_municipality: Voting is limited only to Tampere residents.
+      physically_identified: You have been already identified at a physical location. Please contact the City of Tampere.
+      too_young: You are too young to vote.

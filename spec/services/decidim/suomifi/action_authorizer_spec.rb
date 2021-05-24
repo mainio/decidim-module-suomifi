@@ -80,6 +80,33 @@ describe Decidim::Suomifi::ActionAuthorizer do
         ]
       )
     end
+
+    context "when reauthorization is allowed" do
+      before do
+        # rubocop:disable RSpec/SubjectStub
+        allow(subject).to receive(:allow_reauthorization?).and_return(true)
+        # rubocop:enable RSpec/SubjectStub
+      end
+
+      it "is unauthorized" do
+        expect(subject.authorize).to eq(
+          [
+            :incomplete,
+            {
+              extra_explanation: {
+                key: "too_young",
+                params: {
+                  scope: "suomifi_action_authorizer.restrictions",
+                  minimum_age: minimum_age
+                }
+              }
+            },
+            { action: :reauthorize },
+            { cancel: true }
+          ]
+        )
+      end
+    end
   end
 
   context "when the user has already voted" do
@@ -99,6 +126,17 @@ describe Decidim::Suomifi::ActionAuthorizer do
             }
           }
         ]
+      )
+    end
+  end
+
+  describe "#redirect_params" do
+    it "returns redirect params" do
+      expect(subject.redirect_params).to eq(
+        {
+          "minimum_age" => minimum_age,
+          "allowed_municipalities" => allowed_municipalities
+        }
       )
     end
   end
