@@ -20,6 +20,7 @@ describe Decidim::Suomifi::Verification::Engine do
     ).with(:suomifi_eid) do |&block|
       workflow = double
       expect(workflow).to receive(:engine=).with(described_class)
+      expect(workflow).to receive(:action_authorizer=).with("Decidim::Suomifi::ActionAuthorizer")
       expect(workflow).to receive(:expires_in=).with(0.minutes)
 
       block.call(workflow)
