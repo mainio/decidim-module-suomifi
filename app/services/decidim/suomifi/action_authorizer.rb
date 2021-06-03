@@ -117,9 +117,7 @@ module Decidim
       end
 
       def other_authorization_handlers
-        return [] unless Decidim::Verifications.workflows.respond_to? :map
-
-        Decidim::Verifications.workflows.map(&:name).delete_if { |n| n == "suomifi_eid" }
+        Array Decidim::Suomifi.other_authorization_handlers
       end
     end
   end

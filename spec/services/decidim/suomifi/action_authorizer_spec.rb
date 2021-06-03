@@ -118,6 +118,10 @@ describe Decidim::Suomifi::ActionAuthorizer do
     end
     let(:authorization_metadata) { { "pin_digest" => pin_digest } }
 
+    before do
+      allow(Decidim::Suomifi).to receive(:other_authorization_handlers).and_return(["id_documents"])
+    end
+
     it "is unauthorized" do
       expect(subject.authorize).to eq(
         [
