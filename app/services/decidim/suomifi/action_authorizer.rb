@@ -70,7 +70,6 @@ module Decidim
       def requirements!
         allowed_municipalities
         minimum_age
-        other_authorization_handlers
       end
 
       def voted_physically?
@@ -118,7 +117,9 @@ module Decidim
       end
 
       def other_authorization_handlers
-        @other_authorization_handlers ||= options.delete("other_authorization_handlers").to_s.split(",").compact.collect(&:to_s)
+        return [] unless Decidim::Verifications.workflows.respond_to? :map
+
+        Decidim::Verifications.workflows.map(&:name).delete_if { |n| n == "suomifi_eid" }
       end
     end
   end
