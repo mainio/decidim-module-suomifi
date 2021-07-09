@@ -5,9 +5,9 @@ sv:
         explanation: Identifiera dig själv med Suomi.fi-identifikation.
         name: Suomi.fi-identifikation
         fields:
-          minimum_age: Minimiålder
-          allowed_municipalities: Tillåtna kommuner
-          other_authorization_handlers: Andra auktoriseringshanterare
+          minimum_age: Ålder åtminstone
+          allowed_municipalities: Tillåtna kommunnummer
+          other_authorization_handlers: Andra verifieringsmetoder
     authorization_modals:
       content:
         incomplete:
@@ -31,17 +31,17 @@ sv:
       organizations:
         omniauth_settings:
           suomifi:
-            certificate_file: Certificate file
-            entity_id: Entity ID
+            certificate_file: Certifikatfil
+            entity_id: Entitet ID (Entity ID)
             mode: Läge
-            private_key_file: Private key file
+            private_key_file: Privat nyckel fil
     verifications:
       authorizations:
         first_login:
           actions:
-            suomifi_eid: Suomifi eid
+            suomifi_eid: Suomi.fi
   suomifi_action_authorizer:
     restrictions:
-      disallowed_municipality: Röstning är begränsad till invånare i kommunen.
+      disallowed_municipality: Omröstningen är begränsad till invånare i kommunen.
       physically_identified: Du har redan identifierats på en fysisk plats. Vänligen kontakta din kommun.
       too_young: Du är för ung för att rösta.

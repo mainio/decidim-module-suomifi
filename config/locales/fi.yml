@@ -5,9 +5,9 @@ fi:
         explanation: Tunnista itsesi Suomi.fi-tunnistuspalvelun avulla.
         name: Suomi.fi tunnistus
         fields:
-          minimum_age: Ikä minimissään
-          allowed_municipalities: Sallitut kunnat
-          other_authorization_handlers: Muut tunnistautumistavat
+          minimum_age: Ikä vähintään
+          allowed_municipalities: Sallitut kuntakoodit
+          other_authorization_handlers: Muut vahvistustavat
     authorization_modals:
       content:
         incomplete:
@@ -31,17 +31,17 @@ fi:
       organizations:
         omniauth_settings:
           suomifi:
-            certificate_file: Certificate file
-            entity_id: Entity ID
+            certificate_file: Sertifikaatin tiedosto
+            entity_id: Palvelun ID-tunniste (Entity ID)
             mode: Tila
-            private_key_file: Yksityinen avaintiedosto
+            private_key_file: Yksityisen avaimen tiedosto
     verifications:
       authorizations:
         first_login:
           actions:
-            suomifi_eid: Suomifi eid
+            suomifi_eid: Suomi.fi
   suomifi_action_authorizer:
     restrictions:
-      disallowed_municipality: Äänestys on rajattu vain kunnan asukkaille.
-      physically_identified: Sinut on jo tunnistettu fyysisessä toimipisteessä. Ota yhteyttä kuntaasi.
+      disallowed_municipality: Äänestys on rajoitettu vain kunnan asukkaille.
+      physically_identified: Sinut on jo tunnistettu fyysisessä toimipisteessä. Ota yhteyttä kuntaan.
       too_young: Olet liian nuori äänestääksesi.
