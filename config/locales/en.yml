@@ -6,7 +6,7 @@ en:
         name: Suomi.fi e-Identification
         fields:
           minimum_age: Minimum age
-          allowed_municipalities: Allowed municipalities
+          allowed_municipalities: Allowed municipality codes
           other_authorization_handlers: Other authorization handlers
     authorization_modals:
       content:
@@ -39,7 +39,7 @@ en:
       authorizations:
         first_login:
           actions:
-            suomifi_eid: Suomifi eid
+            suomifi_eid: Suomi.fi
   suomifi_action_authorizer:
     restrictions:
       disallowed_municipality: Voting is limited to residents of the municipality only.
