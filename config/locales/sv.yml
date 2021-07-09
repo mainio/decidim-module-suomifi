@@ -3,11 +3,11 @@ sv:
     authorization_handlers:
       suomifi_eid:
         explanation: Identifiera dig själv med Suomi.fi-identifikation.
-        fields:
-          minimum_age: Minimum age
-          allowed_municipalities: Allowed municipalities
-          other_authorization_handlers: Other authorization handlers
         name: Suomi.fi-identifikation
+        fields:
+          minimum_age: Minimiålder
+          allowed_municipalities: Tillåtna kommuner
+          other_authorization_handlers: Andra auktoriseringshanterare
     authorization_modals:
       content:
         incomplete:
@@ -42,6 +42,6 @@ sv:
             suomifi_eid: Suomifi eid
   suomifi_action_authorizer:
     restrictions:
-      disallowed_municipality: Voting is limited only to Tampere residents.
-      physically_identified: You have been already identified at a physical location. Please contact the City of Tampere.
-      too_young: You are too young to vote.
+      disallowed_municipality: Röstning är begränsad till invånare i kommunen.
+      physically_identified: Du har redan identifierats på en fysisk plats. Vänligen kontakta din kommun.
+      too_young: Du är för ung för att rösta.

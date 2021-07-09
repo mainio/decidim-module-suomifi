@@ -13,20 +13,19 @@ describe Decidim::Suomifi::ActionAuthorizer do
   let(:options) do
     {
       "minimum_age" => minimum_age.to_s,
-      "allowed_municipalities" => allowed_municipalities,
-      "other_authorization_handlers" => other_authorization_handlers
+      "allowed_municipalities" => allowed_municipalities
     }
   end
   let(:minimum_age) { 13 }
   let(:allowed_municipalities) { "91,837,49" }
-  let(:other_authorization_handlers) { "tampere_documents_authorization_handler" }
 
   let(:authorization) { create(:authorization, :granted, user: user, metadata: metadata) }
   let(:user) { create :user, organization: organization }
   let(:metadata) do
     {
       municipality: municipality,
-      date_of_birth: date_of_birth
+      date_of_birth: date_of_birth,
+      pin_digest: pin_digest
     }
   end
   let(:municipality) { "837" }
@@ -110,8 +109,18 @@ describe Decidim::Suomifi::ActionAuthorizer do
   end
 
   context "when the user has already voted" do
-    let!(:authorization) { create(:authorization, name: "tampere_documents_authorization_handler", metadata: authorization_metadata) }
+    let!(:document_authorization) do
+      create(
+        :authorization,
+        name: "id_documents",
+        metadata: authorization_metadata
+      )
+    end
     let(:authorization_metadata) { { "pin_digest" => pin_digest } }
+
+    before do
+      allow(Decidim::Suomifi).to receive(:other_authorization_handlers).and_return(["id_documents"])
+    end
 
     it "is unauthorized" do
       expect(subject.authorize).to eq(

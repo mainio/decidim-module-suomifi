@@ -4,6 +4,10 @@ fi:
       suomifi_eid:
         explanation: Tunnista itsesi Suomi.fi-tunnistuspalvelun avulla.
         name: Suomi.fi tunnistus
+        fields:
+          minimum_age: Ikä minimissään
+          allowed_municipalities: Sallitut kunnat
+          other_authorization_handlers: Muut tunnistautumistavat
     authorization_modals:
       content:
         incomplete:
@@ -38,6 +42,6 @@ fi:
             suomifi_eid: Suomifi eid
   suomifi_action_authorizer:
     restrictions:
-      disallowed_municipality: Äänestys on rajattu vain Tampereen asukkaille.
-      physically_identified: Sinut on jo tunnistettu fyysisessä toimipisteessä. Ota yhteyttä Tampereen kaupunkiin.
+      disallowed_municipality: Äänestys on rajattu vain kunnan asukkaille.
+      physically_identified: Sinut on jo tunnistettu fyysisessä toimipisteessä. Ota yhteyttä kuntaasi.
       too_young: Olet liian nuori äänestääksesi.

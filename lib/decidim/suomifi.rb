@@ -75,6 +75,12 @@ module Decidim
       end
     end
 
+    # List of other verification workflows where we want to check if user has
+    # used same pin digest
+    config_accessor :other_authorization_handlers do
+      []
+    end
+
     # Extra configuration for the omniauth strategy
     config_accessor :extra do
       {}
