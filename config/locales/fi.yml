@@ -6,7 +6,7 @@ fi:
         name: Suomi.fi tunnistus
         fields:
           minimum_age: Ikä vähintään
-          allowed_municipalities: Sallitut kuntakoodit
+          allowed_municipalities: Allowed municipality codes
           other_authorization_handlers: Muut vahvistustavat
     authorization_modals:
       content:
@@ -31,8 +31,8 @@ fi:
       organizations:
         omniauth_settings:
           suomifi:
-            certificate_file: Certificate file
-            entity_id: Entity ID
+            certificate_file: Sertifikaatin tiedosto
+            entity_id: Palvelun ID-tunniste (Entity ID)
             mode: Tila
             private_key_file: Yksityisen avaimen tiedosto
     verifications:
