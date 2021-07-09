@@ -6,7 +6,7 @@ sv:
         name: Suomi.fi-identifikation
         fields:
           minimum_age: Ålder åtminstone
-          allowed_municipalities: Allowed municipality codes
+          allowed_municipalities: Tillåtna kommunnummer
           other_authorization_handlers: Andra verifieringsmetoder
     authorization_modals:
       content:
