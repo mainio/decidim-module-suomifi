@@ -7,6 +7,7 @@ require "decidim/suomifi/version"
 Gem::Specification.new do |spec|
   spec.name = "decidim-suomifi"
   spec.version = Decidim::Suomifi::VERSION
+  spec.required_ruby_version = ">= 2.7"
   spec.authors = ["Antti Hukkanen"]
   spec.email = ["antti.hukkanen@mainiotech.fi"]
 
@@ -26,7 +27,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "decidim-core", Decidim::Suomifi::DECIDIM_VERSION
   spec.add_dependency "henkilotunnus", "~> 1.1.0"
-  spec.add_dependency "omniauth-suomifi", "~> 0.3.0"
+  spec.add_dependency "omniauth-suomifi", "~> 0.5.0"
 
   spec.add_development_dependency "decidim-dev", Decidim::Suomifi::DECIDIM_VERSION
 

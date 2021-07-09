@@ -26,6 +26,7 @@ module Decidim
           # this engine would not be found.
           Decidim::Verifications.register_workflow(:suomifi_eid) do |workflow|
             workflow.engine = Decidim::Suomifi::Verification::Engine
+            workflow.action_authorizer = "Decidim::Suomifi::ActionAuthorizer"
 
             Decidim::Suomifi::Verification::Manager.configure_workflow(workflow)
           end

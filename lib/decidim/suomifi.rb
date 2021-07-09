@@ -75,6 +75,12 @@ module Decidim
       end
     end
 
+    # List of other verification workflows where we want to check if user has
+    # used same pin digest
+    config_accessor :other_authorization_handlers do
+      []
+    end
+
     # Extra configuration for the omniauth strategy
     config_accessor :extra do
       {}
@@ -167,15 +173,18 @@ module Decidim
 
       host = url_options[:host]
       port = url_options[:port]
+      protocol = url_options[:protocol]
+      protocol = [80, 3000].include?(port.to_i) ? "http" : "https" if protocol.blank?
       if host.blank?
         # Default to local development environment
-        host = "http://localhost"
+        protocol = "http" if url_options[:protocol].blank?
+        host = "localhost"
         port ||= 3000
       end
 
-      return "#{host}:#{port}" if port && ![80, 443].include?(port.to_i)
+      return "#{protocol}://#{host}:#{port}" if port && ![80, 443].include?(port.to_i)
 
-      host
+      "#{protocol}://#{host}"
     end
   end
 end

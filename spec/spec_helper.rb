@@ -33,6 +33,7 @@ Decidim::Suomifi::Test::Runtime.initializer do
     config.sp_entity_id = "http://1.lvh.me/users/auth/suomifi/metadata"
     config.certificate = cs.certificate.to_pem
     config.private_key = cs.private_key.to_pem
+    config.action_authorizer = "Decidim::Suomifi::ActionAuthorizer"
     config.use_suomifi_email = true
     config.auto_email_domain = "1.lvh.me"
     config.extra = {

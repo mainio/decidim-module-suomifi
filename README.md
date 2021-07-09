@@ -1,6 +1,6 @@
 # Decidim::Suomifi
 
-[![Build Status](https://travis-ci.com/mainio/decidim-module-suomifi.svg?branch=master)](https://travis-ci.com/mainio/decidim-module-suomifi)
+[![Build Status](https://github.com/mainio/decidim-module-suomifi/actions/workflows/ci_suomifi.yml/badge.svg)](https://github.com/mainio/decidim-module-suomifi/actions)
 [![codecov](https://codecov.io/gh/mainio/decidim-module-suomifi/branch/master/graph/badge.svg)](https://codecov.io/gh/mainio/decidim-module-suomifi)
 
 A [Decidim](https://github.com/decidim/decidim) module to add Suomi.fi
