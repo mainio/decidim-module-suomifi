@@ -6,7 +6,7 @@ fi:
         name: Suomi.fi tunnistus
         fields:
           minimum_age: Ikä vähintään
-          allowed_municipalities: Allowed municipality codes
+          allowed_municipalities: Sallitut kuntakoodit
           other_authorization_handlers: Muut vahvistustavat
     authorization_modals:
       content:
