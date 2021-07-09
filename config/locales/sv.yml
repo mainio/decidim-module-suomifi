@@ -5,9 +5,9 @@ sv:
         explanation: Identifiera dig själv med Suomi.fi-identifikation.
         name: Suomi.fi-identifikation
         fields:
-          minimum_age: Minimum age
-          allowed_municipalities: Allowed municipalities
-          other_authorization_handlers: Other authorization handlers
+          minimum_age: Ålder åtminstone
+          allowed_municipalities: Tillåtna kommunnummer
+          other_authorization_handlers: Andra verifieringsmetoder
     authorization_modals:
       content:
         incomplete:
@@ -39,9 +39,9 @@ sv:
       authorizations:
         first_login:
           actions:
-            suomifi_eid: Suomifi eid
+            suomifi_eid: Suomi.fi
   suomifi_action_authorizer:
     restrictions:
-      disallowed_municipality: Voting is limited to residents of the municipality only.
-      physically_identified: You have been already identified at a physical location. Please contact your municipality.
-      too_young: You are too young to vote.
+      disallowed_municipality: Omröstningen är begränsad till invånare i kommunen.
+      physically_identified: Du har redan identifierats på en fysisk plats. Vänligen kontakta din kommun.
+      too_young: Du är för ung för att rösta.
