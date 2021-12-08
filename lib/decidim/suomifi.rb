@@ -4,6 +4,9 @@ require "omniauth"
 require "omniauth-suomifi"
 require "henkilotunnus"
 
+# Make sure the omniauth methods work after OmniAuth 2.0+
+require "omniauth/rails_csrf_protection"
+
 require_relative "suomifi/version"
 require_relative "suomifi/engine"
 require_relative "suomifi/authentication"
