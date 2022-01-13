@@ -27,6 +27,10 @@ sv:
             success: Du har godkänts med Suomi.fi
           destroy:
             success: Tillståndet återställs efterhand.
+          new:
+            continue: Fortsätt utan att vänta
+            description: Vänta ett ögonblick, du kommer att omdirigeras till e-legitimationstjänsten...
+            title: Omdirigering
     system:
       organizations:
         omniauth_settings:
