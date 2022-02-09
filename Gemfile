@@ -11,12 +11,9 @@ base_path = "../" if File.basename(__dir__) == "development_app"
 require_relative "#{base_path}lib/decidim/suomifi/version"
 
 DECIDIM_VERSION = Decidim::Suomifi::DECIDIM_VERSION
-# DECIDIM_VERSION = { github: "decidim/decidim", branch: "release/0.23-stable" }
 
 gem "decidim", DECIDIM_VERSION
 gem "decidim-suomifi", path: "."
-
-gem "omniauth-suomifi", "~> 0.5.0"
 
 gem "bootsnap", "~> 1.4"
 gem "puma", ">= 5.0.0"
