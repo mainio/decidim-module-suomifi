@@ -90,7 +90,7 @@ module Decidim
             )
           end
 
-          authorization.pseudonymized_pin = authorization_metadata["pin_digest"] if authorization.pseudonymized_pin.blank?
+          authorization.pseudonymized_pin = person_identifier_digest if authorization.pseudonymized_pin.blank?
           authorization.attributes = {
             unique_id: user_signature,
             metadata: authorization_metadata
