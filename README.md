@@ -34,6 +34,8 @@ And then execute:
 
 ```bash
 $ bundle
+$ bundle exec rails decidim_suomifi:install:migrations
+$ bundle exec rails db:migrate
 ```
 
 After installation, you can add the initializer running the following command:
