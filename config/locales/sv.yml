@@ -28,9 +28,9 @@ sv:
           destroy:
             success: Tillståndet återställs efterhand.
           new:
-            continue: Continue without waiting
-            description: Please wait a moment, you will be redirected to the e-identification service...
-            title: Redirection
+            continue: Fortsätt utan att vänta
+            description: Vänta ett ögonblick, du kommer att omdirigeras till identifieringstjänsten...
+            title: Omdirigering
     system:
       organizations:
         omniauth_settings:
