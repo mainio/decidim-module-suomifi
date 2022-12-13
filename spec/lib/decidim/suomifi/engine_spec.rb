@@ -107,16 +107,18 @@ describe Decidim::Suomifi::Engine do
       config = double
       expect(config).to receive(:omniauth).with(
         :suomifi,
-        mode: :test,
-        scope_of_data: :medium_extensive,
-        sp_entity_id: "http://1.lvh.me/users/auth/suomifi/metadata",
-        certificate: cs.certificate.to_pem,
-        private_key: cs.private_key.to_pem,
-        assertion_consumer_service_url: "http://1.lvh.me/users/auth/suomifi/callback",
-        idp_cert_multi: {
-          signing: [cs.sign_certificate.to_pem]
-        },
-        idp_slo_session_destroy: instance_of(Proc)
+        {
+          mode: :test,
+          scope_of_data: :medium_extensive,
+          sp_entity_id: "http://1.lvh.me/users/auth/suomifi/metadata",
+          certificate: cs.certificate.to_pem,
+          private_key: cs.private_key.to_pem,
+          assertion_consumer_service_url: "http://1.lvh.me/users/auth/suomifi/callback",
+          idp_cert_multi: {
+            signing: [cs.sign_certificate.to_pem]
+          },
+          idp_slo_session_destroy: instance_of(Proc)
+        }
       )
       block.call(config)
     end
