@@ -5,8 +5,11 @@ require "spec_helper"
 describe Decidim::Suomifi do
   let(:config) { double }
 
-  before do
-    allow(subject).to receive(:config).and_return(config)
+  around do |example|
+    original_config = subject.config
+    subject.instance_variable_set(:@_config, config)
+    example.run
+    subject.instance_variable_set(:@_config, original_config)
   end
 
   describe ".mode" do
@@ -42,8 +45,9 @@ describe Decidim::Suomifi do
   describe ".sp_entity_id" do
     it "returns the correct path by default" do
       allow(config).to receive(:sp_entity_id).and_return(nil)
-      expect(subject).to receive(:application_host).and_return(
-        "https://www.example.org"
+      allow(Rails.application.config.action_controller).to receive(:default_url_options).and_return(
+        protocol: "https",
+        host: "www.example.org"
       )
 
       expect(subject.sp_entity_id).to eq(
@@ -66,7 +70,7 @@ describe Decidim::Suomifi do
     it "returns the certificate file content when configured with a file" do
       file = double
       contents = double
-      allow(subject).to receive(:certificate_file).and_return(file)
+      allow(config).to receive(:certificate_file).and_return(file)
       allow(File).to receive(:read).with(file).and_return(contents)
 
       expect(subject.certificate).to eq(contents)
@@ -76,7 +80,7 @@ describe Decidim::Suomifi do
       let(:certificate) { double }
 
       it "returns what is set by the module configuration" do
-        allow(subject).to receive(:certificate_file).and_return(nil)
+        allow(config).to receive(:certificate_file).and_return(nil)
         allow(config).to receive(:certificate).and_return(certificate)
 
         expect(subject.certificate).to eq(certificate)
@@ -88,7 +92,7 @@ describe Decidim::Suomifi do
     it "returns the private key file content when configured with a file" do
       file = double
       contents = double
-      allow(subject).to receive(:private_key_file).and_return(file)
+      allow(config).to receive(:private_key_file).and_return(file)
       allow(File).to receive(:read).with(file).and_return(contents)
 
       expect(subject.private_key).to eq(contents)
@@ -98,7 +102,7 @@ describe Decidim::Suomifi do
       let(:private_key) { double }
 
       it "returns what is set by the module configuration" do
-        allow(subject).to receive(:private_key_file).and_return(nil)
+        allow(config).to receive(:private_key_file).and_return(nil)
         allow(config).to receive(:private_key).and_return(private_key)
 
         expect(subject.private_key).to eq(private_key)
@@ -116,12 +120,14 @@ describe Decidim::Suomifi do
     let(:extra) { { extra1: "abc", extra2: 123 } }
 
     it "returns the expected omniauth configuration hash" do
-      allow(subject).to receive(:mode).and_return(mode)
-      allow(subject).to receive(:scope_of_data).and_return(scope_of_data)
-      allow(subject).to receive(:sp_entity_id).and_return(sp_entity_id)
-      allow(subject).to receive(:certificate).and_return(certificate)
-      allow(subject).to receive(:private_key).and_return(private_key)
-      allow(subject).to receive(:idp_slo_session_destroy).and_return(idp_slo_session_destroy)
+      allow(config).to receive(:mode).and_return(mode)
+      allow(config).to receive(:scope_of_data).and_return(scope_of_data)
+      allow(config).to receive(:sp_entity_id).and_return(sp_entity_id)
+      allow(config).to receive(:certificate_file).and_return(nil)
+      allow(config).to receive(:certificate).and_return(certificate)
+      allow(config).to receive(:private_key_file).and_return(nil)
+      allow(config).to receive(:private_key).and_return(private_key)
+      allow(config).to receive(:idp_slo_session_destroy).and_return(idp_slo_session_destroy)
       allow(config).to receive(:extra).and_return(extra)
 
       expect(subject.omniauth_settings).to include(

@@ -12,14 +12,13 @@ module Decidim
         end
 
         def verified_email
-          @verified_email ||= begin
+          @verified_email ||=
             if Decidim::Suomifi.use_suomifi_email && saml_attributes[:email]
               saml_attributes[:email]
             else
               domain = Decidim::Suomifi.auto_email_domain || organization.host
               "suomifi-#{person_identifier_digest}@#{domain}"
             end
-          end
         end
 
         # Private: Create form params from omniauth hash
@@ -143,15 +142,13 @@ module Decidim
           return oauth_data[:info][:name] if oauth_data[:info][:name]
 
           @user_full_name ||= begin
-            first_name = begin
+            first_name =
               saml_attributes[:given_name] ||
-                saml_attributes[:first_names] ||
-                saml_attributes[:eidas_first_names]
-            end
-            last_name = begin
+              saml_attributes[:first_names] ||
+              saml_attributes[:eidas_first_names]
+            last_name =
               saml_attributes[:last_name] ||
-                saml_attributes[:eidas_family_name]
-            end
+              saml_attributes[:eidas_family_name]
 
             "#{first_name} #{last_name}"
           end

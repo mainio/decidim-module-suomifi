@@ -317,16 +317,17 @@ module Decidim
 
             it "forgets the user" do
               omniauth_callback_get
-              expect(Decidim::User.find(confirmed_user.id).remember_created_at).to eq(nil)
+              expect(Decidim::User.find(confirmed_user.id).remember_created_at).to be_nil
             end
           end
         end
 
         context "when the user is already signed in and authorized" do
           let!(:authorization) do
-            identifier_digest = "FIHETU:" + Digest::MD5.hexdigest(
+            base_digest = Digest::MD5.hexdigest(
               "FI:220185-765L:#{Rails.application.secrets.secret_key_base}"
             )
+            identifier_digest = "FIHETU:#{base_digest}"
             signature = OmniauthRegistrationForm.create_signature(
               :suomifi,
               identifier_digest
@@ -389,9 +390,10 @@ module Decidim
           end
 
           before do
-            identifier_digest = "FIHETU:" + Digest::MD5.hexdigest(
+            base_digest = Digest::MD5.hexdigest(
               "FI:220185-765L:#{Rails.application.secrets.secret_key_base}"
             )
+            identifier_digest = "FIHETU:#{base_digest}"
             another_user.identities.create!(
               organization: organization,
               provider: "suomifi",
@@ -438,9 +440,10 @@ module Decidim
           end
 
           before do
-            identifier_digest = "FIHETU:" + Digest::MD5.hexdigest(
+            base_digest = Digest::MD5.hexdigest(
               "FI:220185-765L:#{Rails.application.secrets.secret_key_base}"
             )
+            identifier_digest = "FIHETU:#{base_digest}"
             signature = OmniauthRegistrationForm.create_signature(
               :suomifi,
               identifier_digest
@@ -578,7 +581,7 @@ module Decidim
 
       def saml_response_from_file(file)
         filepath = file_fixture(file)
-        file_io = IO.read(filepath)
+        file_io = File.read(filepath)
         doc = Nokogiri::XML::Document.parse(file_io)
 
         yield doc if block_given?

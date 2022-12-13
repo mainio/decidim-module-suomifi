@@ -21,7 +21,7 @@ describe Decidim::Suomifi::Engine do
 
   it "mounts the routes to the core engine" do
     routes = double
-    expect(Decidim::Core::Engine).to receive(:routes).and_return(routes)
+    allow(Decidim::Core::Engine).to receive(:routes).and_return(routes)
     expect(routes).to receive(:prepend) do |&block|
       context = double
       expect(context).to receive(:mount).with(described_class => "/")
@@ -130,11 +130,11 @@ describe Decidim::Suomifi::Engine do
     expect(OmniAuth.config).to receive(:on_failure=) do |proc|
       env = double
       action = double
-      expect(env).to receive(:[]).with("PATH_INFO").and_return(
+      allow(env).to receive(:[]).with("PATH_INFO").and_return(
         "/users/auth/suomifi"
       )
       expect(env).to receive(:[]=).with("devise.mapping", ::Devise.mappings[:user])
-      expect(Decidim::Suomifi::OmniauthCallbacksController).to receive(
+      allow(Decidim::Suomifi::OmniauthCallbacksController).to receive(
         :action
       ).with(:failure).and_return(action)
       expect(action).to receive(:call).with(env)
@@ -148,10 +148,10 @@ describe Decidim::Suomifi::Engine do
   it "falls back on the default OmniAuth failure app" do
     failure_app = double
 
-    expect(OmniAuth.config).to receive(:on_failure).and_return(failure_app)
-    expect(OmniAuth.config).to receive(:on_failure=) do |proc|
+    allow(OmniAuth.config).to receive(:on_failure).and_return(failure_app)
+    allow(OmniAuth.config).to receive(:on_failure=) do |proc|
       env = double
-      expect(env).to receive(:[]).with("PATH_INFO").and_return(
+      allow(env).to receive(:[]).with("PATH_INFO").and_return(
         "/something/else"
       )
       expect(failure_app).to receive(:call).with(env)

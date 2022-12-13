@@ -72,7 +72,7 @@ module Decidim
 
             @empty_line_count = 0
             File.readlines(filepath).each do |line|
-              if line =~ /^$/
+              if line.match?(/^$/)
                 @empty_line_count += 1
                 next
               else
@@ -92,26 +92,31 @@ module Decidim
           attr_accessor :filepath, :empty_line_count, :inside_config, :inside_omniauth, :config_branch
 
           def handle_line(line)
-            if inside_config && line =~ /^  omniauth:/
+            if inside_config && line.match?(/^  omniauth:/)
               self.inside_omniauth = true
-            elsif inside_omniauth && (line =~ /^(  )?[a-z]+/ || line =~ /^#.*/)
+            elsif inside_omniauth && (line.match?(/^(  )?[a-z]+/) || line.match?(/^#.*/))
               inject_suomifi_config
               self.inside_omniauth = false
             end
 
-            return unless line =~ /^[a-z]+/
+            return unless line.match?(/^[a-z]+/)
 
+            handle_line_match(line)
+          end
+
+          def handle_line_match(line)
             # A new root configuration block starts
             self.inside_config = false
             self.inside_omniauth = false
 
-            if line =~ /^default:/
+            case line
+            when /^default:/
               self.inside_config = true
               self.config_branch = :default
-            elsif line =~ /^development:/
+            when /^development:/
               self.inside_config = true
               self.config_branch = :development
-            elsif line =~ /^test:/
+            when /^test:/
               self.inside_config = true
               self.config_branch = :test
             end
@@ -124,7 +129,7 @@ module Decidim
 
           def inject_suomifi_config
             @final += "    suomifi:\n"
-            if %i(development test).include?(config_branch)
+            if [:development, :test].include?(config_branch)
               @final += "      enabled: true\n"
               @final += "      mode: test\n"
             else

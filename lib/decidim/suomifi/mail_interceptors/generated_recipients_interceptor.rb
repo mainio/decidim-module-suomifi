@@ -12,9 +12,9 @@ module Decidim
           regexp = /^suomifi-[a-z0-9]{32}@#{Decidim::Suomifi.auto_email_domain}$/
 
           # Remove the auto-generated email from the message recipients
-          message.to = message.to.reject { |email| email =~ regexp } if message.to
-          message.cc = message.cc.reject { |email| email =~ regexp } if message.cc
-          message.bcc = message.bcc.reject { |email| email =~ regexp } if message.bcc
+          message.to = message.to.grep_v(regexp) if message.to
+          message.cc = message.cc.grep_v(regexp) if message.cc
+          message.bcc = message.bcc.grep_v(regexp) if message.bcc
 
           # Prevent delivery in case there are no recipients on the email
           message.perform_deliveries = false if message.to.empty?

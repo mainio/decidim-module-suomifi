@@ -10,6 +10,9 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = ">= 3.0"
   spec.authors = ["Antti Hukkanen"]
   spec.email = ["antti.hukkanen@mainiotech.fi"]
+  spec.metadata = {
+    "rubygems_mfa_required" => "true"
+  }
 
   spec.summary = "Provides possibility to bind Suomi.fi authentication provider to Decidim."
   spec.description = "Adds Suomi.fi authentication provider to Decidim."

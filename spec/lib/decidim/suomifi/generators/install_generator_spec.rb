@@ -7,14 +7,17 @@ require "generators/decidim/suomifi/install_generator"
 describe Decidim::Suomifi::Generators::InstallGenerator do
   let(:options) { {} }
 
-  before { allow(subject).to receive(:options).and_return(options) }
+  before { subject.options = options }
 
   describe "#copy_initializer" do
     it "copies the initializer file" do
+      # We don't want the generator to actually copy the file
+      # rubocop:disable RSpec/SubjectStub
       expect(subject).to receive(:copy_file).with(
         "suomifi_initializer.rb",
         "config/initializers/suomifi.rb"
       )
+      # rubocop:enable RSpec/SubjectStub
       subject.copy_initializer
     end
 
@@ -22,10 +25,13 @@ describe Decidim::Suomifi::Generators::InstallGenerator do
       let(:options) { { test_initializer: true } }
 
       it "copies the test initializer file" do
+        # We don't want the generator to actually copy the file
+        # rubocop:disable RSpec/SubjectStub
         expect(subject).to receive(:copy_file).with(
           "suomifi_initializer_test.rb",
           "config/initializers/suomifi.rb"
         )
+        # rubocop:enable RSpec/SubjectStub
         subject.copy_initializer
       end
     end
@@ -33,8 +39,11 @@ describe Decidim::Suomifi::Generators::InstallGenerator do
 
   describe "#copy_dummy_certificate" do
     it "does not copy the dummy certificate by default" do
+      # We need these expectations to make sure it doesn't do anything
+      # rubocop:disable RSpec/SubjectStub
       expect(subject).not_to receive(:empty_directory)
       expect(subject).not_to receive(:copy_file)
+      # rubocop:enable RSpec/SubjectStub
 
       subject.copy_dummy_certificate
     end
@@ -43,6 +52,8 @@ describe Decidim::Suomifi::Generators::InstallGenerator do
       let(:options) { { dummy_cert: true } }
 
       it "copies the test initializer file" do
+        # We don't want the generator to actually copy the file
+        # rubocop:disable RSpec/SubjectStub
         expect(subject).to receive(:empty_directory).with("config/cert")
         expect(subject).to receive(:copy_file).with(
           "suomifi_localhost.crt",
@@ -52,6 +63,7 @@ describe Decidim::Suomifi::Generators::InstallGenerator do
           "suomifi_localhost.key",
           "config/cert/suomifi.key"
         )
+        # rubocop:enable RSpec/SubjectStub
 
         subject.copy_dummy_certificate
       end
@@ -117,14 +129,14 @@ describe Decidim::Suomifi::Generators::InstallGenerator do
     end
 
     it "enables the Suomi.fi authentication by modifying the secrets.yml file" do
-      expect(File).to receive(:read).and_return(secrets_yml)
-      expect(File).to receive(:readlines).and_return(secrets_yml.lines)
+      allow(File).to receive(:read).and_return(secrets_yml)
+      allow(File).to receive(:readlines).and_return(secrets_yml.lines)
       expect(File).to receive(:open).with(anything, "w") do |&block|
         file = double
         expect(file).to receive(:puts).with(secrets_yml_modified)
         block.call(file)
       end
-      expect(subject).to receive(:say_status).with(
+      expect(subject.shell).to receive(:say_status).with(
         :insert,
         "config/secrets.yml",
         :green
@@ -135,10 +147,10 @@ describe Decidim::Suomifi::Generators::InstallGenerator do
 
     context "with Suomi.fi already enabled" do
       it "reports identical status" do
-        expect(YAML).to receive(:safe_load).and_return(
+        allow(YAML).to receive(:safe_load).and_return(
           "default" => { "omniauth" => { "suomifi" => {} } }
         )
-        expect(subject).to receive(:say_status).with(
+        expect(subject.shell).to receive(:say_status).with(
           :identical,
           "config/secrets.yml",
           :blue
