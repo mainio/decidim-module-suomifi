@@ -69,9 +69,7 @@ RSpec.configure do |config|
       :get,
       "https://testi.apro.tunnistus.fi/static/metadata/idp-metadata.xml"
     ).to_return(status: 200, body: File.new(metadata_path), headers: {})
-  end
 
-  config.before do
     # Re-define the password validators due to a bug in the "email included"
     # check which does not work well for domains such as "1.lvh.me" that we are
     # using during tests.
