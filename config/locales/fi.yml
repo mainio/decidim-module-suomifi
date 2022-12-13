@@ -29,8 +29,8 @@ fi:
             success: Varmennus tyhjennetty onnistuneesti.
           new:
             continue: Jatka odottamatta
-            description: Odota hetki, sinut ohjataan tunnistautumiseen...
-            title: Ohjaus
+            description: Ole hyvä ja odota hetki, sinut ohjataan tunnistautumispalveluun...
+            title: Uudelleenohjaus
     system:
       organizations:
         omniauth_settings:

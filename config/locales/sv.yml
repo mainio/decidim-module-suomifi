@@ -29,7 +29,7 @@ sv:
             success: Tillståndet återställs efterhand.
           new:
             continue: Fortsätt utan att vänta
-            description: Vänta ett ögonblick, du kommer att omdirigeras till e-legitimationstjänsten...
+            description: Vänta ett ögonblick, du kommer att omdirigeras till identifieringstjänsten...
             title: Omdirigering
     system:
       organizations:
