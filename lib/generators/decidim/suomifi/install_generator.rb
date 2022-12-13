@@ -43,7 +43,8 @@ module Decidim
 
         def enable_authentication
           secrets_path = Rails.application.root.join("config", "secrets.yml")
-          secrets = YAML.safe_load(File.read(secrets_path), [], [], true)
+          secrets_content = ERB.new(File.read(secrets_path)).result
+          secrets = YAML.safe_load(secrets_content, [], [], true)
 
           if secrets["default"]["omniauth"]["suomifi"]
             say_status :identical, "config/secrets.yml", :blue
