@@ -28,9 +28,9 @@ fi:
           destroy:
             success: Varmennus tyhjennetty onnistuneesti.
           new:
-            continue: Continue without waiting
-            description: Please wait a moment, you will be redirected to the e-identification service...
-            title: Redirection
+            continue: Jatka odottamatta
+            description: Ole hyvä ja odota hetki, sinut ohjataan tunnistautumispalveluun...
+            title: Uudelleenohjaus
     system:
       organizations:
         omniauth_settings:
