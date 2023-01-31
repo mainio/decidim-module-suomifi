@@ -170,6 +170,18 @@ describe Decidim::Suomifi::Engine do
     run_initializer("decidim_suomifi.mail_interceptors")
   end
 
+  # Remove this spec after https://github.com/decidim/decidim/pull/10320 is
+  # merged and the code is adapted.
+  #
+  # This is here only to remind that the following inclusion should be removed
+  # from the Engine:
+  #   Decidim::Authorization.include(Decidim::Suomifi::AuthorizationExtensions)
+  #
+  # NOTE: When this is removed from the engine, the concern can be also removed.
+  it "adds the customization for the Authorization model" do
+    expect(Gem::Version.new(Decidim.version)).to be < Gem::Version.new("0.28.0")
+  end
+
   def run_initializer(initializer_name)
     config = described_class.initializers.find do |i|
       i.name == initializer_name

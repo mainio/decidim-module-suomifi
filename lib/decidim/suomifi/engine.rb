@@ -107,6 +107,14 @@ module Decidim
           MailInterceptors::GeneratedRecipientsInterceptor
         )
       end
+
+      # NOTE: This is no longer needed after the following PR is merged:
+      # https://github.com/decidim/decidim/pull/10320
+      initializer "decidim_suomifi.add_customizations", after: "decidim.action_controller" do
+        config.to_prepare do
+          Decidim::Authorization.include(Decidim::Suomifi::AuthorizationExtensions)
+        end
+      end
     end
   end
 end
