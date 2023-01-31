@@ -19,7 +19,7 @@ describe Decidim::Suomifi::ActionAuthorizer do
   let(:minimum_age) { 13 }
   let(:allowed_municipalities) { "91,837,49" }
 
-  let(:authorization) { create(:authorization, :granted, user: user, metadata: metadata) }
+  let(:authorization) { create(:authorization, :granted, user: user, metadata: metadata, pseudonymized_pin: pin_digest) }
   let(:user) { create :user, organization: organization }
   let(:metadata) do
     {
@@ -113,7 +113,8 @@ describe Decidim::Suomifi::ActionAuthorizer do
       create(
         :authorization,
         name: "id_documents",
-        metadata: authorization_metadata
+        metadata: authorization_metadata,
+        pseudonymized_pin: pin_digest
       )
     end
     let(:authorization_metadata) { { "pin_digest" => pin_digest } }
@@ -136,6 +137,26 @@ describe Decidim::Suomifi::ActionAuthorizer do
           }
         ]
       )
+    end
+
+    context "when the pin_digest is not defined only in the pseudonymized_pin column" do
+      let(:authorization_metadata) { {} }
+
+      it "is unauthorized" do
+        expect(subject.authorize).to eq(
+          [
+            :unauthorized,
+            {
+              extra_explanation: {
+                key: "physically_identified",
+                params: {
+                  scope: "suomifi_action_authorizer.restrictions"
+                }
+              }
+            }
+          ]
+        )
+      end
     end
   end
 

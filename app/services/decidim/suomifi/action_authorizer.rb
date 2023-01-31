@@ -76,9 +76,10 @@ module Decidim
         return false if other_authorization_handlers.blank?
 
         other_authorization_handlers.each do |authorization_handler|
-          Decidim::Authorization.where(name: authorization_handler).find_each do |auth|
-            return true if auth.metadata["pin_digest"] == authorization.metadata["pin_digest"]
-          end
+          return true if Decidim::Authorization.where(
+            name: authorization_handler,
+            pseudonymized_pin: authorization.pseudonymized_pin
+          ).any?
         end
         false
       end
