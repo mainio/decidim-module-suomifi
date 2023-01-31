@@ -67,7 +67,7 @@ RSpec.configure do |config|
     )
     stub_request(
       :get,
-      "https://testi.apro.tunnistus.fi/static/metadata/idp-metadata.xml"
+      "https://static.apro.tunnistus.fi/static/metadata/idp-metadata.xml"
     ).to_return(status: 200, body: File.new(metadata_path), headers: {})
 
     # Re-define the password validators due to a bug in the "email included"
