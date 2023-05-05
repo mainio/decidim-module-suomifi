@@ -14,6 +14,10 @@ module Decidim
           # The redirection happens in the view as it needs to be a POST
           # request.
         end
+
+        def edit
+          # Same as above.
+        end
       end
     end
   end

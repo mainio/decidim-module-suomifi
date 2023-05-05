@@ -27,6 +27,10 @@ fi:
             success: Sinut on onnistuneesti tunnistettu Suomi.fi-palvelun avulla
           destroy:
             success: Varmennus tyhjennetty onnistuneesti.
+          edit:
+            continue: Jatka odottamatta
+            description: Ole hyvä ja odota hetki, sinut ohjataan tunnistautumispalveluun...
+            title: Uudelleenohjaus
           new:
             continue: Jatka odottamatta
             description: Ole hyvä ja odota hetki, sinut ohjataan tunnistautumispalveluun...

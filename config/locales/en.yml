@@ -27,6 +27,10 @@ en:
             success: You have been successfully authorized through Suomi.fi
           destroy:
             success: Authorization sucessfully reset.
+          edit:
+            continue: Continue without waiting
+            description: Please wait a moment, you will be redirected to the e-identification service...
+            title: Redirection
           new:
             continue: Continue without waiting
             description: Please wait a moment, you will be redirected to the e-identification service...
