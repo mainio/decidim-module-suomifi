@@ -39,7 +39,7 @@ fi:
       organizations:
         omniauth_settings:
           suomifi:
-            certificate_file: Sertifikaatin tiedosto
+            certificate_file: Varmenteen tiedosto
             entity_id: Palvelun ID-tunniste (Entity ID)
             mode: Tila
             private_key_file: Yksityisen avaimen tiedosto
@@ -51,5 +51,5 @@ fi:
   suomifi_action_authorizer:
     restrictions:
       disallowed_municipality: Äänestys on rajoitettu vain kunnan asukkaille.
-      physically_identified: Sinut on jo tunnistettu fyysisessä toimipisteessä. Ota yhteyttä kuntaan.
+      physically_identified: Olet jo tunnistautunut fyysisessä toimipisteessä. Ota yhteyttä kuntaan.
       too_young: Olet liian nuori äänestääksesi.
