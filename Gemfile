@@ -35,6 +35,5 @@ group :development do
 end
 
 group :test do
-  gem "codecov", require: false
   gem "xmlenc", "~> 0.8.0"
 end

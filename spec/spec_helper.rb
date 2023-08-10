@@ -7,12 +7,6 @@ require "webmock"
 require "decidim/suomifi/test/cert_store"
 require "decidim/suomifi/test/runtime"
 
-require "simplecov" if ENV.fetch("SIMPLECOV", nil) || ENV.fetch("CODECOV", nil)
-if ENV["CODECOV"]
-  require "codecov"
-  SimpleCov.formatter = SimpleCov::Formatter::Codecov
-end
-
 ENV["ENGINE_ROOT"] = File.dirname(__dir__)
 
 Decidim::Dev.dummy_app_path =
