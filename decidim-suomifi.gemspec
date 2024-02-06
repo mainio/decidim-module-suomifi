@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "decidim-core", Decidim::Suomifi::DECIDIM_VERSION
   spec.add_dependency "henkilotunnus", "~> 1.2.0"
-  spec.add_dependency "omniauth-suomifi", "~> 0.6.0"
+  spec.add_dependency "omniauth-suomifi", "~> 0.6.3"
 
   spec.add_development_dependency "decidim-dev", Decidim::Suomifi::DECIDIM_VERSION
 

@@ -15,6 +15,10 @@ module Decidim
       def suomifi
         session["decidim-suomifi.signed_in"] = true
 
+        if (redirect_path = session[:saml_redirect_url]).present? && redirect_path.match?(%r{\A/.*\z})
+          store_location_for(:user, redirect_path)
+        end
+
         authenticator.validate!
 
         if user_signed_in?
