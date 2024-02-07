@@ -64,7 +64,7 @@ module Decidim
 
       def after_sign_out_path_for(_resource_name)
         redirect_to = session.delete("saml_redirect_url")
-        return redirect_to if redirect_to.match?(%r{\A/.*\z})
+        return redirect_to if redirect_to.present? && redirect_to.match?(%r{\A/.*\z})
 
         "/"
       end
