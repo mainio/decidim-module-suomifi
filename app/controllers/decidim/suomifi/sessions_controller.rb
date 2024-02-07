@@ -19,6 +19,7 @@ module Decidim
           # omniauth-saml. These are used to generate a valid SLO request.
           session["saml_uid"] = saml_uid
           session["saml_session_index"] = saml_session_index
+          session["saml_redirect_url"] = request.params["redirect_url"]
 
           # Generate the SLO redirect path and parameters.
           relay = slo_callback_user_session_path
@@ -59,6 +60,13 @@ module Decidim
         set_flash_message! :notice, :signed_out if params[:success] == "1"
 
         redirect_to after_sign_out_path_for(resource_name)
+      end
+
+      def after_sign_out_path_for(_resource_name)
+        redirect_to = session.delete("saml_redirect_url")
+        return redirect_to if redirect_to.match?(%r{\A/.*\z})
+
+        "/"
       end
     end
   end
