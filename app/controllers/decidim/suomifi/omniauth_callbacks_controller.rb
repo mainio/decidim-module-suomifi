@@ -41,6 +41,9 @@ module Decidim
           cookies.delete :remember_admin_token, domain: current_organization.host
           cookies.update response.cookies
 
+          # Store the Suomi.fi session
+          create_suomifi_session!
+
           # Show the success message and redirect back to the authorizations
           flash[:notice] = t(
             "authorizations.create.success",
@@ -58,6 +61,18 @@ module Decidim
         fail_authorize(e.validation_key)
       rescue Decidim::Suomifi::Authentication::IdentityBoundToOtherUserError
         fail_authorize(:identity_bound_to_other_user)
+      end
+
+      # Overridden so that we can store the
+      def sign_in(resource_or_scope, *args)
+        super
+
+        # Check that this is coming from the Decidim authentication
+        options = args.extract_options!
+        return unless options
+        return if options[:event] != :authentication
+
+        create_suomifi_session!
       end
 
       def failure
@@ -142,6 +157,14 @@ module Decidim
         authenticator.authorize_user!(user)
       rescue Decidim::Suomifi::Authentication::AuthorizationBoundToOtherUserError
         nil
+      end
+
+      def create_suomifi_session!
+        Decidim::Suomifi::Session.create!(
+          user: current_user,
+          saml_uid: session["saml_uid"],
+          saml_session_index: session["saml_session_index"]
+        )
       end
 
       def fail_authorize(failure_message_key = :already_authorized)
