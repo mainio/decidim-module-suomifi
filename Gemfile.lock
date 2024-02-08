@@ -4,7 +4,7 @@ PATH
     decidim-suomifi (0.27.0)
       decidim-core (~> 0.27.0)
       henkilotunnus (~> 1.2.0)
-      omniauth-suomifi (~> 0.6.3)
+      omniauth-suomifi (~> 0.7.0)
 
 GEM
   remote: https://rubygems.org/
@@ -550,7 +550,7 @@ GEM
     omniauth-saml (2.1.0)
       omniauth (~> 2.0)
       ruby-saml (~> 1.12)
-    omniauth-suomifi (0.6.3)
+    omniauth-suomifi (0.7.0)
       omniauth-saml (~> 2.0)
       ruby-saml (~> 1.13.0)
     omniauth-twitter (1.4.0)
