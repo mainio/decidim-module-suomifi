@@ -26,6 +26,7 @@ describe "Decidim::Suomifi::SloCheck", type: :controller do
 
       expect(response).to have_http_status(:ok)
       expect(response.body).to eq("Hello, World!")
+      expect(flash[:warning]).to be_nil
     end
   end
 
