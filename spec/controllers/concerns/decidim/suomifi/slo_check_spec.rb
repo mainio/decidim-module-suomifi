@@ -62,6 +62,32 @@ describe "Decidim::Suomifi::SloCheck", type: :controller do
           expect(response).to redirect_to("/")
           expect(flash[:warning]).not_to be_empty
         end
+
+        it "signs out the user" do
+          get :show
+
+          expect(subject.current_user).to be_nil
+        end
+
+        it "destroys the Suomi.fi session" do
+          expect { get :show }.to change(Decidim::Suomifi::Session, :count).by(-1)
+        end
+
+        it "clears the session variables" do
+          get :show
+
+          expect(request.session["decidim-suomifi.signed_in"]).to be_nil
+          expect(request.session["saml_uid"]).to be_nil
+          expect(request.session["saml_session_index"]).to be_nil
+        end
+
+        %w(decidim-suomifi.signed_in saml_uid saml_session_index).each do |key|
+          context "without session variable '#{key}'" do
+            before { request.session.delete(key) }
+
+            it_behaves_like "normal request"
+          end
+        end
       end
     end
   end
