@@ -21,6 +21,8 @@ fi:
           invalid_data: Sinua ei voida tunnistaa Suomi.fi-palvelun avulla.
           session_expiration: Tunnistautumisistunto vanhentui. Yritä uudestaan.
           success_status: Tunnistautuminen epäonnistui tai peruutettiin. Yritä uudestaan.
+      slo_check:
+        session_ended: Istuntosi on vanhentunut. Kirjaudu uudelleen, jos haluat jatkaa palvelun käyttöä.
       verification:
         authorizations:
           create:
