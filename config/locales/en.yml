@@ -21,6 +21,8 @@ en:
           invalid_data: You cannot be authenticated through Suomi.fi.
           session_expiration: Authentication session expired. Please try again.
           success_status: Authentication failed or cancelled. Please try again.
+      slo_check:
+        session_ended: Your session has expired. Please log in again if you want to continue using the service.
       verification:
         authorizations:
           create:

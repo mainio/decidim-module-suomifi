@@ -21,6 +21,8 @@ sv:
           invalid_data: Du kan inte verifiera dig genom Suomi.fi.
           session_expiration: Autentiseringssessionen har gått ut. Var god försök igen.
           success_status: Autentiseringen misslyckades eller avbröts. Var god försök igen.
+      slo_check:
+        session_ended: Din session har gått ut. Logga in på nytt om du vill fortsätta att använda tjänsten.
       verification:
         authorizations:
           create:

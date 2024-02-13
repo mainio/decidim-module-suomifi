@@ -112,6 +112,10 @@ module Decidim
       # https://github.com/decidim/decidim/pull/10320
       initializer "decidim_suomifi.add_customizations", after: "decidim.action_controller" do
         config.to_prepare do
+          # Controllers
+          Decidim::ApplicationController.include(Decidim::Suomifi::SloCheck)
+
+          # Models
           Decidim::Authorization.include(Decidim::Suomifi::AuthorizationExtensions)
         end
       end
