@@ -289,7 +289,7 @@ describe Decidim::Suomifi::Authentication::Authenticator do
     end
     let(:pin_digest) do
       Digest::MD5.hexdigest(
-        "FI:150785-5843:#{Rails.application.secrets.secret_key_base}"
+        "FI:#{saml_attributes[:national_identification_number]}:#{Rails.application.secrets.secret_key_base}"
       )
     end
 
@@ -313,6 +313,79 @@ describe Decidim::Suomifi::Authentication::Authenticator do
         "postal_code" => nil,
         "permanent_address" => false
       )
+    end
+
+    context "when the person is a male" do
+      let(:saml_attributes) do
+        {
+          national_identification_number: "150785-915S",
+          common_name: "Mainio Matti Mikko",
+          display_name: "Matti Mainio",
+          first_names: "Matti Mikko",
+          given_name: "Matti",
+          last_name: "Mainio"
+        }
+      end
+
+      it "creates a new authorization with correct gender" do
+        auth = subject.authorize_user!(user)
+
+        expect(auth.metadata).to include(
+          "eidas" => false,
+          "pin_digest" => pin_digest,
+          "gender" => "m",
+          "date_of_birth" => "1985-07-15",
+          "first_name" => "Matti Mikko",
+          "given_name" => "Matti",
+          "last_name" => "Mainio",
+          "municipality" => nil,
+          "municipality_name" => nil,
+          "postal_code" => nil,
+          "permanent_address" => false
+        )
+      end
+    end
+
+    context "when the person is gender neutral" do
+      let(:saml_attributes) do
+        {
+          national_identification_number: "150785Y915S",
+          common_name: "Mainio Neutraali Naava",
+          display_name: "Neutraali Mainio",
+          first_names: "Neutraali Naava",
+          given_name: "Neutraali",
+          last_name: "Mainio"
+        }
+      end
+
+      before do
+        # The gender neutral identification numbers are going to be taken into
+        # use 1.1.2027. After that, the `hetu` gem will report gender neutrality
+        # for the identification numbers that have one of the new punctuation
+        # marks.
+        #
+        # See:
+        # https://github.com/bittisiirto/henkilotunnus/blob/ae732a2c6787861f9deb6a647aec3c0ae9cc4f5f/lib/henkilotunnus/hetu.rb#L55C53-L55C61
+        allow(Time).to receive(:now).and_return(Time.zone.parse("2027-01-01"))
+      end
+
+      it "creates a new authorization with correct gender" do
+        auth = subject.authorize_user!(user)
+
+        expect(auth.metadata).to include(
+          "eidas" => false,
+          "pin_digest" => pin_digest,
+          "gender" => nil,
+          "date_of_birth" => "1985-07-15",
+          "first_name" => "Neutraali Naava",
+          "given_name" => "Neutraali",
+          "last_name" => "Mainio",
+          "municipality" => nil,
+          "municipality_name" => nil,
+          "postal_code" => nil,
+          "permanent_address" => false
+        )
+      end
     end
 
     context "when an authorization already exists" do

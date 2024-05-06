@@ -37,10 +37,14 @@ module Decidim
         end
 
         context "when there is an active Suomi.fi sign in" do
+          let!(:suomifi_session) { create(:suomifi_session, user: confirmed_user) }
+
           it "signs out the user through the Suomi.fi SLO" do
             # Generate a dummy session by requesting the home page.
             get "/"
             request.session["decidim-suomifi.signed_in"] = true
+            request.session["saml_uid"] = suomifi_session.saml_uid
+            request.session["saml_session_index"] = suomifi_session.saml_session_index
 
             post "/users/sign_out", env: {
               "rack.session" => request.session,

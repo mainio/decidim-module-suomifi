@@ -72,8 +72,10 @@ module Decidim
     config_accessor :idp_slo_session_destroy do
       proc do |_env, session|
         flash = session["flash"]
+        redirect_url = session["saml_redirect_url"]
         result = session.clear
         session["flash"] = flash if flash
+        session["saml_redirect_url"] = redirect_url if redirect_url
         result
       end
     end
