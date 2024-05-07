@@ -157,12 +157,12 @@ module Decidim
 
     def self.omniauth_settings
       settings = {
-        mode: mode,
-        scope_of_data: scope_of_data,
-        sp_entity_id: sp_entity_id,
-        certificate: certificate,
-        private_key: private_key,
-        idp_slo_session_destroy: idp_slo_session_destroy
+        mode:,
+        scope_of_data:,
+        sp_entity_id:,
+        certificate:,
+        private_key:,
+        idp_slo_session_destroy:
       }
       settings.merge!(config.extra) if config.extra.is_a?(Hash)
       settings

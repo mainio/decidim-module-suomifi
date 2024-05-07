@@ -18,7 +18,7 @@ module Decidim
           # Check if the user was already signed out by another service and
           # redirect directly to the SLO callback in this case as we do not
           # need to sign out the user again (the request would fail).
-          suomifi_session = Decidim::Suomifi::Session.find_by(saml_uid: saml_uid, saml_session_index: saml_session_index)
+          suomifi_session = Decidim::Suomifi::Session.find_by(saml_uid:, saml_session_index:)
           session_ended = suomifi_session&.ended?
           suomifi_session&.destroy!
           return redirect_to(slo_callback_user_session_path(success: "1")) if session_ended

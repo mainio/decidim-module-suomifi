@@ -148,7 +148,7 @@ module Decidim
             get "/users/slo_callback", params: { success: "1" }
 
             expect(response).to redirect_to("/")
-            expect(flash[:notice]).to eq("Signed out successfully.")
+            expect(flash[:notice]).to eq("Logged out successfully.")
           end
         end
       end

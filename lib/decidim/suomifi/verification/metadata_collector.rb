@@ -61,21 +61,21 @@ module Decidim
           end
 
           {
-            eidas: eidas,
-            gender: gender,
-            date_of_birth: date_of_birth,
+            eidas:,
+            gender:,
+            date_of_birth:,
             pin_digest: person_identifier_digest,
             # The first name will contain all first names of the person
-            first_name: first_name,
+            first_name:,
             # The given name is the primary first name of the person, also known
             # as "calling name" (kutsumanimi).
-            given_name: given_name,
-            last_name: last_name,
+            given_name:,
+            last_name:,
             # The municipality number, see:
             # http://tilastokeskus.fi/meta/luokitukset/kunta/001-2017/index.html
             municipality: saml_attributes[:home_municipality_number],
             municipality_name: saml_attributes[:home_municipality_name_fi],
-            postal_code: postal_code,
+            postal_code:,
             permanent_address: postal_code_permanent
           }
         end

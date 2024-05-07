@@ -12,8 +12,6 @@ ENV["ENGINE_ROOT"] = File.dirname(__dir__)
 Decidim::Dev.dummy_app_path =
   File.expand_path(File.join(__dir__, "decidim_dummy_app"))
 
-require_relative "base_spec_helper"
-
 Decidim::Suomifi::Test::Runtime.initializer do
   # Silence the OmniAuth logger
   OmniAuth.config.logger = Logger.new("/dev/null")
@@ -29,15 +27,10 @@ Decidim::Suomifi::Test::Runtime.initializer do
     config.private_key = cs.private_key.to_pem
     config.action_authorizer = "Decidim::Suomifi::ActionAuthorizer"
     config.use_suomifi_email = true
-    config.auto_email_domain = "1.lvh.me"
-    config.extra = {
-      assertion_consumer_service_url: "http://1.lvh.me/users/auth/suomifi/callback",
-      idp_cert_multi: {
-        signing: [cs.sign_certificate.to_pem]
-      }
-    }
   end
 end
+
+require_relative "base_spec_helper"
 
 Decidim::Suomifi::Test::Runtime.load_app
 
@@ -67,9 +60,8 @@ RSpec.configure do |config|
     # Re-define the password validators due to a bug in the "email included"
     # check which does not work well for domains such as "1.lvh.me" that we are
     # using during tests.
-    PasswordValidator.send(:remove_const, :VALIDATION_METHODS)
-    PasswordValidator.const_set(
-      :VALIDATION_METHODS,
+    stub_const(
+      "VALIDATION_METHODS",
       [
         :password_too_short?,
         :password_too_long?,
@@ -80,7 +72,7 @@ RSpec.configure do |config|
         :domain_included_in_password?,
         :password_too_common?,
         :blacklisted?
-      ].freeze
+      ]
     )
   end
 end

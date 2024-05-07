@@ -2,8 +2,8 @@
 
 require "spec_helper"
 
-describe "Decidim::Suomifi::SloCheck", type: :controller do
-  let!(:organization) { create :organization }
+describe "Decidim::Suomifi::SloCheck" do
+  let!(:organization) { create(:organization) }
   let!(:user) { nil }
 
   controller do
@@ -35,14 +35,14 @@ describe "Decidim::Suomifi::SloCheck", type: :controller do
   end
 
   context "when there is a user" do
-    let!(:user) { create :user, :confirmed, organization: organization }
+    let!(:user) { create(:user, :confirmed, organization:) }
 
     context "without Suomi.fi session" do
       it_behaves_like "normal request"
     end
 
     context "with Suomi.fi session" do
-      let!(:suomifi_session) { create(:suomifi_session, user: user) }
+      let!(:suomifi_session) { create(:suomifi_session, user:) }
 
       before do
         get :show
@@ -54,7 +54,7 @@ describe "Decidim::Suomifi::SloCheck", type: :controller do
       it_behaves_like "normal request"
 
       context "and the session has ended" do
-        let!(:suomifi_session) { create(:suomifi_session, user: user, ended_at: Time.current) }
+        let!(:suomifi_session) { create(:suomifi_session, user:, ended_at: Time.current) }
 
         it "redirects to the root path and shows a flash warning" do
           get :show

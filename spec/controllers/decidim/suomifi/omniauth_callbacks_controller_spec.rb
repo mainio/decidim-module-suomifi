@@ -15,7 +15,7 @@ module Decidim
 
       # For testing with signed in user
       let(:confirmed_user) do
-        create(:user, :confirmed, organization: organization)
+        create(:user, :confirmed, organization:)
       end
 
       before do
@@ -60,7 +60,7 @@ module Decidim
           expect(user.nickname).to eq("matti_mainio")
 
           authorization = Authorization.find_by(
-            user: user,
+            user:,
             name: "suomifi_eid"
           )
           expect(authorization).not_to be_nil
@@ -140,7 +140,7 @@ module Decidim
             expect(user.nickname).to eq("marja_mainio")
 
             authorization = Authorization.find_by(
-              user: user,
+              user:,
               name: "suomifi_eid"
             )
             expect(authorization).not_to be_nil
@@ -228,7 +228,7 @@ module Decidim
             expect(user.nickname).to eq("felipe_guerrero_torr")
 
             authorization = Authorization.find_or_initialize_by(
-              user: user,
+              user:,
               name: "suomifi_eid"
             )
             expect(authorization).not_to be_nil
@@ -386,7 +386,7 @@ module Decidim
 
         context "when another user is already identified with the same identity" do
           let(:another_user) do
-            create(:user, :confirmed, organization: organization)
+            create(:user, :confirmed, organization:)
           end
 
           before do
@@ -395,7 +395,7 @@ module Decidim
             )
             identifier_digest = "FIHETU:#{base_digest}"
             another_user.identities.create!(
-              organization: organization,
+              organization:,
               provider: "suomifi",
               uid: identifier_digest
             )
@@ -436,7 +436,7 @@ module Decidim
 
         context "when another user is already authorized with the same identity" do
           let(:another_user) do
-            create(:user, :confirmed, organization: organization)
+            create(:user, :confirmed, organization:)
           end
 
           before do

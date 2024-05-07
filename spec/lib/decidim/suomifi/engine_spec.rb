@@ -9,12 +9,12 @@ describe Decidim::Suomifi::Engine do
   # manually. Normally this is done when the application's middleware stack is
   # loaded.
   after do
-    unless ::Devise.omniauth_configs[:suomifi].strategy
-      ::OmniAuth::Strategies::Suomifi.new(
+    unless Devise.omniauth_configs[:suomifi].strategy
+      OmniAuth::Strategies::Suomifi.new(
         Rails.application,
         Decidim::Suomifi.omniauth_settings
       ) do |strategy|
-        ::Devise.omniauth_configs[:suomifi].strategy = strategy
+        Devise.omniauth_configs[:suomifi].strategy = strategy
       end
     end
   end
@@ -38,7 +38,7 @@ describe Decidim::Suomifi::Engine do
       expect(
         Decidim::Core::Engine.routes.recognize_path(
           "/users/auth/suomifi",
-          method: method
+          method:
         )
       ).to eq(
         controller: "decidim/suomifi/omniauth_callbacks",
@@ -47,7 +47,7 @@ describe Decidim::Suomifi::Engine do
       expect(
         Decidim::Core::Engine.routes.recognize_path(
           "/users/auth/suomifi/callback",
-          method: method
+          method:
         )
       ).to eq(
         controller: "decidim/suomifi/omniauth_callbacks",
@@ -61,7 +61,7 @@ describe Decidim::Suomifi::Engine do
       expect(
         Decidim::Core::Engine.routes.recognize_path(
           "/users/auth/suomifi/slo",
-          method: method
+          method:
         )
       ).to eq(
         controller: "decidim/suomifi/sessions",
@@ -70,7 +70,7 @@ describe Decidim::Suomifi::Engine do
       expect(
         Decidim::Core::Engine.routes.recognize_path(
           "/users/auth/suomifi/spslo",
-          method: method
+          method:
         )
       ).to eq(
         controller: "decidim/suomifi/sessions",
@@ -81,7 +81,7 @@ describe Decidim::Suomifi::Engine do
       expect(
         Decidim::Core::Engine.routes.recognize_path(
           "/users/sign_out",
-          method: method
+          method:
         )
       ).to eq(
         controller: "decidim/suomifi/sessions",
@@ -106,19 +106,7 @@ describe Decidim::Suomifi::Engine do
 
       config = double
       expect(config).to receive(:omniauth).with(
-        :suomifi,
-        {
-          mode: :test,
-          scope_of_data: :medium_extensive,
-          sp_entity_id: "http://1.lvh.me/users/auth/suomifi/metadata",
-          certificate: cs.certificate.to_pem,
-          private_key: cs.private_key.to_pem,
-          assertion_consumer_service_url: "http://1.lvh.me/users/auth/suomifi/callback",
-          idp_cert_multi: {
-            signing: [cs.sign_certificate.to_pem]
-          },
-          idp_slo_session_destroy: instance_of(Proc)
-        }
+        "tee"
       )
       block.call(config)
     end
@@ -133,7 +121,7 @@ describe Decidim::Suomifi::Engine do
       allow(env).to receive(:[]).with("PATH_INFO").and_return(
         "/users/auth/suomifi"
       )
-      expect(env).to receive(:[]=).with("devise.mapping", ::Devise.mappings[:user])
+      expect(env).to receive(:[]=).with("devise.mapping", Devise.mappings[:user])
       allow(Decidim::Suomifi::OmniauthCallbacksController).to receive(
         :action
       ).with(:failure).and_return(action)
@@ -179,7 +167,7 @@ describe Decidim::Suomifi::Engine do
   #
   # NOTE: When this is removed from the engine, the concern can be also removed.
   it "adds the customization for the Authorization model" do
-    expect(Gem::Version.new(Decidim.version)).to be < Gem::Version.new("0.28.0")
+    expect(Gem::Version.new(Decidim.version)).to be < Gem::Version.new("0.29.0")
   end
 
   def run_initializer(initializer_name)

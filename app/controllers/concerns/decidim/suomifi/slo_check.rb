@@ -32,7 +32,7 @@ module Decidim
         scope = ::Devise::Mapping.find_scope!(:user)
         warden = request.env["warden"]
         warden.logout(scope)
-        warden.clear_strategies_cache!(scope: scope)
+        warden.clear_strategies_cache!(scope:)
 
         # Clear the current session
         session.clear

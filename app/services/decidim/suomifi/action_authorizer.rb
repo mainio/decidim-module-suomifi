@@ -34,7 +34,7 @@ module Decidim
             key: "too_young",
             params: {
               scope: "suomifi_action_authorizer.restrictions",
-              minimum_age: minimum_age
+              minimum_age:
             }
           }
         end

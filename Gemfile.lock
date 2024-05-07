@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     decidim-suomifi (0.28.0)
-      decidim-core (~> 0.28.1)
+      decidim-core (~> 0.28.0)
       henkilotunnus (~> 1.2.0)
       omniauth-suomifi (~> 0.7.0)
 
@@ -796,8 +796,8 @@ PLATFORMS
 DEPENDENCIES
   bootsnap (~> 1.17)
   byebug (~> 11.0)
-  decidim (~> 0.28.1)
-  decidim-dev (~> 0.28.1)
+  decidim (~> 0.28.0)
+  decidim-dev (~> 0.28.0)
   decidim-suomifi!
   faker (~> 3.2.2)
   letter_opener_web (~> 2.0)
