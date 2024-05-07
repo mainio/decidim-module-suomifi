@@ -15,7 +15,7 @@ DECIDIM_VERSION = Decidim::Suomifi::DECIDIM_VERSION
 gem "decidim", DECIDIM_VERSION
 gem "decidim-suomifi", path: "."
 
-gem "bootsnap", "~> 1.4"
+gem "bootsnap", "~> 1.17"
 gem "puma", ">= 6.4.2"
 
 group :development, :test do

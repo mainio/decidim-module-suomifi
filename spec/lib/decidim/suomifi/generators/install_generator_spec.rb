@@ -113,11 +113,11 @@ describe Decidim::Suomifi::Generators::InstallGenerator do
     let(:secrets_yml_modified) do
       default = "    suomifi:\n"
       default += "      enabled: false\n"
-      default += "      icon: globe\n"
+      default += "      icon: globe-line\n"
       development = "    suomifi:\n"
       development += "      enabled: true\n"
       development += "      mode: test\n"
-      development += "      icon: globe\n"
+      development += "      icon: globe-line\n"
 
       secrets_yml_template.gsub(
         /%SUOMIFI_INJECTION_DEFAULT%/,

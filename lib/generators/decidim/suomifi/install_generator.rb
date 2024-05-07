@@ -135,7 +135,7 @@ module Decidim
             else
               @final += "      enabled: false\n"
             end
-            @final += "      icon: globe\n"
+            @final += "      icon: globe-line\n"
           end
         end
       end

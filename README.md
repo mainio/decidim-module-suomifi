@@ -111,7 +111,7 @@ default: &default
     # ...
     suomifi:
       enabled: false
-      icon: globe
+      icon: icon-globe
 development:
   # ...
   omniauth:
@@ -119,7 +119,7 @@ development:
     suomifi:
       enabled: true
       mode: test
-      icon: globe
+      icon: icon-globe
 ```
 
 This will enable the Suomi.fi authentication for the development environment
@@ -131,7 +131,7 @@ default which is defined by the `mode: test` option in the OmniAuth
 configuration. For environments that you want to hook into the Suomi.fi
 production environment, you can omit this configuration option completely.
 
-The example configuration will set the `globe` icon for the the authentication
+The example configuration will set the `icon-globe` icon for the the authentication
 button from the Decidim's own iconset. In case you want to have a better and
 more formal styling for the sign in button, you will need to customize the sign
 in / sign up views.
