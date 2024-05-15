@@ -15,8 +15,8 @@ describe Decidim::Authorization do
           # this can be changed into:
           # super.merge(pseudonymized_pin: "abcdef0123456789")
           {
-            unique_id: unique_id,
-            metadata: metadata,
+            unique_id:,
+            metadata:,
             pseudonymized_pin: "abcdef0123456789"
           }
         end
@@ -26,7 +26,7 @@ describe Decidim::Authorization do
         end
       end
     end
-    let(:handler) { handler_class.from_params(user: user) }
+    let(:handler) { handler_class.from_params(user:) }
 
     let(:authorization) { Decidim::Authorization.last }
 
@@ -40,7 +40,7 @@ describe Decidim::Authorization do
     context "when Decidim core is upgraded" do
       it "PLEASE CHECK THE UPGRADE NOTES" do
         # Search: https://github.com/decidim/decidim/pull/10320
-        expect(Gem::Version.new(Decidim.version)).to be < Gem::Version.new("0.28.0")
+        expect(Gem::Version.new(Decidim.version)).to be < Gem::Version.new("0.29.0")
       end
     end
   end

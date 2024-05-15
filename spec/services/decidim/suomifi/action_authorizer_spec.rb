@@ -6,7 +6,7 @@ describe Decidim::Suomifi::ActionAuthorizer do
   subject { described_class.new(authorization, options, component, resource) }
 
   let(:organization) { create(:organization) }
-  let(:process) { create(:participatory_process, organization: organization) }
+  let(:process) { create(:participatory_process, organization:) }
   let(:component) { create(:component, manifest_name: "budgets", participatory_space: process) }
   let(:resource) { nil }
 
@@ -19,13 +19,13 @@ describe Decidim::Suomifi::ActionAuthorizer do
   let(:minimum_age) { 13 }
   let(:allowed_municipalities) { "91,837,49" }
 
-  let(:authorization) { create(:authorization, :granted, user: user, metadata: metadata, pseudonymized_pin: pin_digest) }
-  let(:user) { create :user, organization: organization }
+  let(:authorization) { create(:authorization, :granted, user:, metadata:, pseudonymized_pin:) }
+  let(:user) { create(:user, organization:) }
   let(:metadata) do
     {
-      municipality: municipality,
-      date_of_birth: date_of_birth,
-      pin_digest: pin_digest
+      municipality:,
+      date_of_birth:,
+      pin_digest:
     }
   end
   let(:municipality) { "837" }
@@ -72,7 +72,7 @@ describe Decidim::Suomifi::ActionAuthorizer do
               key: "too_young",
               params: {
                 scope: "suomifi_action_authorizer.restrictions",
-                minimum_age: minimum_age
+                minimum_age:
               }
             }
           }
@@ -96,7 +96,7 @@ describe Decidim::Suomifi::ActionAuthorizer do
                 key: "too_young",
                 params: {
                   scope: "suomifi_action_authorizer.restrictions",
-                  minimum_age: minimum_age
+                  minimum_age:
                 }
               }
             },
