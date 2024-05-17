@@ -5,7 +5,7 @@ require "spec_helper"
 module Decidim
   module Suomifi
     module Verification
-      describe AuthorizationsController, type: :controller do
+      describe AuthorizationsController do
         routes { Decidim::Suomifi::Verification::Engine.routes }
 
         render_views

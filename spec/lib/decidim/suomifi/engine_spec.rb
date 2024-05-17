@@ -106,7 +106,19 @@ describe Decidim::Suomifi::Engine do
 
       config = double
       expect(config).to receive(:omniauth).with(
-        "tee"
+        :suomifi,
+        {
+          mode: :test,
+          scope_of_data: :medium_extensive,
+          sp_entity_id: "http://1.lvh.me/users/auth/suomifi/metadata",
+          certificate: cs.certificate.to_pem,
+          private_key: cs.private_key.to_pem,
+          assertion_consumer_service_url: "http://1.lvh.me/users/auth/suomifi/callback",
+          idp_cert_multi: {
+            signing: [cs.sign_certificate.to_pem]
+          },
+          idp_slo_session_destroy: instance_of(Proc)
+        }
       )
       block.call(config)
     end
@@ -158,22 +170,11 @@ describe Decidim::Suomifi::Engine do
     run_initializer("decidim_suomifi.mail_interceptors")
   end
 
-  # Remove this spec after https://github.com/decidim/decidim/pull/10320 is
-  # merged and the code is adapted.
-  #
-  # This is here only to remind that the following inclusion should be removed
-  # from the Engine:
-  #   Decidim::Authorization.include(Decidim::Suomifi::AuthorizationExtensions)
-  #
-  # NOTE: When this is removed from the engine, the concern can be also removed.
-  it "adds the customization for the Authorization model" do
-    expect(Gem::Version.new(Decidim.version)).to be < Gem::Version.new("0.29.0")
-  end
-
   def run_initializer(initializer_name)
     config = described_class.initializers.find do |i|
       i.name == initializer_name
     end
+
     config.run
   end
 end
