@@ -102,10 +102,10 @@ describe Decidim::Suomifi::Generators::InstallGenerator do
 
     let(:secrets_yml) do
       secrets_yml_template.gsub(
-        /%SUOMIFI_INJECTION_DEFAULT%/,
+        "%SUOMIFI_INJECTION_DEFAULT%",
         ""
       ).gsub(
-        /%SUOMIFI_INJECTION_DEVELOPMENT%/,
+        "%SUOMIFI_INJECTION_DEVELOPMENT%",
         ""
       )
     end
@@ -120,17 +120,16 @@ describe Decidim::Suomifi::Generators::InstallGenerator do
       development += "      icon: globe-line\n"
 
       secrets_yml_template.gsub(
-        /%SUOMIFI_INJECTION_DEFAULT%/,
+        "%SUOMIFI_INJECTION_DEFAULT%",
         default
       ).gsub(
-        /%SUOMIFI_INJECTION_DEVELOPMENT%/,
+        "%SUOMIFI_INJECTION_DEVELOPMENT%",
         development
       )
     end
 
     it "enables the Suomi.fi authentication by modifying the secrets.yml file" do
-      allow(File).to receive(:read).and_return(secrets_yml)
-      allow(File).to receive(:readlines).and_return(secrets_yml.lines)
+      allow(File).to receive_messages(read: secrets_yml, readlines: secrets_yml.lines)
       expect(File).to receive(:open).with(anything, "w") do |&block|
         file = double
         expect(file).to receive(:puts).with(secrets_yml_modified)

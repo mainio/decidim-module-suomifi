@@ -80,8 +80,7 @@ describe Decidim::Suomifi do
       let(:certificate) { double }
 
       it "returns what is set by the module configuration" do
-        allow(config).to receive(:certificate_file).and_return(nil)
-        allow(config).to receive(:certificate).and_return(certificate)
+        allow(config).to receive_messages(certificate_file: nil, certificate:)
 
         expect(subject.certificate).to eq(certificate)
       end
@@ -102,8 +101,7 @@ describe Decidim::Suomifi do
       let(:private_key) { double }
 
       it "returns what is set by the module configuration" do
-        allow(config).to receive(:private_key_file).and_return(nil)
-        allow(config).to receive(:private_key).and_return(private_key)
+        allow(config).to receive_messages(private_key_file: nil, private_key:)
 
         expect(subject.private_key).to eq(private_key)
       end
@@ -120,23 +118,15 @@ describe Decidim::Suomifi do
     let(:extra) { { extra1: "abc", extra2: 123 } }
 
     it "returns the expected omniauth configuration hash" do
-      allow(config).to receive(:mode).and_return(mode)
-      allow(config).to receive(:scope_of_data).and_return(scope_of_data)
-      allow(config).to receive(:sp_entity_id).and_return(sp_entity_id)
-      allow(config).to receive(:certificate_file).and_return(nil)
-      allow(config).to receive(:certificate).and_return(certificate)
-      allow(config).to receive(:private_key_file).and_return(nil)
-      allow(config).to receive(:private_key).and_return(private_key)
-      allow(config).to receive(:idp_slo_session_destroy).and_return(idp_slo_session_destroy)
-      allow(config).to receive(:extra).and_return(extra)
+      allow(config).to receive_messages(mode:, scope_of_data:, sp_entity_id:, certificate_file: nil, certificate:, private_key_file: nil, private_key:, idp_slo_session_destroy:, extra:)
 
       expect(subject.omniauth_settings).to include(
-        mode: mode,
-        scope_of_data: scope_of_data,
-        sp_entity_id: sp_entity_id,
-        certificate: certificate,
-        private_key: private_key,
-        idp_slo_session_destroy: idp_slo_session_destroy,
+        mode:,
+        scope_of_data:,
+        sp_entity_id:,
+        certificate:,
+        private_key:,
+        idp_slo_session_destroy:,
         extra1: "abc",
         extra2: 123
       )
@@ -153,8 +143,7 @@ describe Decidim::Suomifi do
 
     before do
       allow(Rails.application).to receive(:config).and_return(rails_config)
-      allow(rails_config).to receive(:action_controller).and_return(controller_config)
-      allow(rails_config).to receive(:action_mailer).and_return(mailer_config)
+      allow(rails_config).to receive_messages(action_controller: controller_config, action_mailer: mailer_config)
       allow(controller_config).to receive(:default_url_options).and_return(controller_defaults)
       allow(mailer_config).to receive(:default_url_options).and_return(mailer_defaults)
     end
