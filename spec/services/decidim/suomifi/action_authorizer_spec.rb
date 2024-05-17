@@ -19,7 +19,7 @@ describe Decidim::Suomifi::ActionAuthorizer do
   let(:minimum_age) { 13 }
   let(:allowed_municipalities) { "91,837,49" }
 
-  let(:authorization) { create(:authorization, :granted, user:, metadata:, pseudonymized_pin:) }
+  let(:authorization) { create(:authorization, :granted, user:, metadata:, pseudonymized_pin: pin_digest) }
   let(:user) { create(:user, organization:) }
   let(:metadata) do
     {

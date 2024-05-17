@@ -27,6 +27,13 @@ Decidim::Suomifi::Test::Runtime.initializer do
     config.private_key = cs.private_key.to_pem
     config.action_authorizer = "Decidim::Suomifi::ActionAuthorizer"
     config.use_suomifi_email = true
+    config.auto_email_domain = "1.lvh.me"
+    config.extra = {
+      assertion_consumer_service_url: "http://1.lvh.me/users/auth/suomifi/callback",
+      idp_cert_multi: {
+        signing: [cs.sign_certificate.to_pem]
+      }
+    }
   end
 end
 
