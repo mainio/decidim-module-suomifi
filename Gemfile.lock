@@ -4,7 +4,7 @@ PATH
     decidim-suomifi (0.28.0)
       decidim-core (~> 0.28.0)
       henkilotunnus (~> 1.2.0)
-      omniauth-suomifi (~> 0.7.0)
+      omniauth-suomifi (~> 0.8.0)
 
 GEM
   remote: https://rubygems.org/
@@ -515,9 +515,9 @@ GEM
     omniauth-saml (2.1.0)
       omniauth (~> 2.0)
       ruby-saml (~> 1.12)
-    omniauth-suomifi (0.7.0)
-      omniauth-saml (~> 2.0)
-      ruby-saml (~> 1.13.0)
+    omniauth-suomifi (0.8.0)
+      omniauth-saml (~> 2.1)
+      ruby-saml (~> 1.17)
     omniauth-twitter (1.4.0)
       omniauth-oauth (~> 1.1)
       rack
@@ -680,8 +680,8 @@ GEM
     rubocop-rspec_rails (2.28.3)
       rubocop (~> 1.40)
     ruby-progressbar (1.13.0)
-    ruby-saml (1.13.0)
-      nokogiri (>= 1.10.5)
+    ruby-saml (1.17.0)
+      nokogiri (>= 1.13.10)
       rexml
     ruby-vips (2.2.1)
       ffi (~> 1.12)
