@@ -28,13 +28,22 @@ module Decidim
               scope: "suomifi_action_authorizer.restrictions"
             }
           }
-        elsif !authorized_age_allowed?
+        elsif !authorized_age_old_enough?
           status_code = :unauthorized
           data[:extra_explanation] = {
             key: "too_young",
             params: {
               scope: "suomifi_action_authorizer.restrictions",
               minimum_age:
+            }
+          }
+        elsif !authorized_age_young_enough?
+          status_code = :unauthorized
+          data[:extra_explanation] = {
+            key: "too_old",
+            params: {
+              scope: "suomifi_action_authorizer.restrictions",
+              maximum_age:
             }
           }
         end
@@ -59,6 +68,7 @@ module Decidim
       def redirect_params
         {
           "minimum_age" => minimum_age,
+          "maximum_age" => maximum_age,
           "allowed_municipalities" => allowed_municipalities.join(",")
         }
       end
@@ -70,6 +80,7 @@ module Decidim
       def requirements!
         allowed_municipalities
         minimum_age
+        maximum_age
       end
 
       def voted_physically?
@@ -91,8 +102,14 @@ module Decidim
         allowed_municipalities.include?(authorization.metadata["municipality"])
       end
 
-      def authorized_age_allowed?
+      def authorized_age_old_enough?
         authorization_age >= minimum_age
+      end
+
+      def authorized_age_young_enough?
+        return true if maximum_age.zero?
+
+        authorization_age <= maximum_age
       end
 
       def authorization_age
@@ -107,6 +124,10 @@ module Decidim
 
       def minimum_age
         @minimum_age ||= options.delete("minimum_age").to_i || 0
+      end
+
+      def maximum_age
+        @maximum_age ||= options.delete("maximum_age").to_i || 0
       end
 
       def allowed_municipalities

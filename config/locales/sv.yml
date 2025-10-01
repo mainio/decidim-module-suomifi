@@ -5,6 +5,7 @@ sv:
         explanation: Identifiera dig själv med Suomi.fi-identifikation.
         name: Suomi.fi-identifikation
         fields:
+          maximum_age: Maximal ålder
           minimum_age: Ålder åtminstone
           allowed_municipalities: Tillåtna kommunnummer
           other_authorization_handlers: Andra verifieringsmetoder
@@ -54,4 +55,5 @@ sv:
     restrictions:
       disallowed_municipality: Omröstningen är begränsad till invånare i kommunen.
       physically_identified: Du har redan identifierats på en fysisk plats. Vänligen kontakta din kommun.
+      too_old: Du är för gammal för att rösta.
       too_young: Du är för ung för att rösta.

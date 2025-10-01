@@ -5,6 +5,7 @@ fi:
         explanation: Tunnistaudu Suomi.fi-tunnistautumispalvelun avulla.
         name: Suomi.fi tunnistautuminen
         fields:
+          maximum_age: Ikä enintään
           minimum_age: Ikä vähintään
           allowed_municipalities: Sallitut kuntakoodit
           other_authorization_handlers: Muut vahvistustavat
@@ -54,4 +55,5 @@ fi:
     restrictions:
       disallowed_municipality: Äänestys on rajoitettu vain kunnan asukkaille.
       physically_identified: Olet jo tunnistautunut fyysisessä toimipisteessä. Ota yhteyttä kuntaan.
+      too_old: Olet liian vanha äänestääksesi.
       too_young: Olet liian nuori äänestääksesi.
