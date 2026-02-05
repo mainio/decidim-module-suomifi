@@ -41,19 +41,6 @@ module Decidim
         super
       end
 
-      # This can be removed after the following PR is merged to the core:
-      # https://github.com/decidim/decidim/pull/5823
-      def sign_out(resource_or_scope = nil)
-        result = super
-
-        # Because of this change in the core, we have to manually clear the
-        # `@real_user` instance variable after sign out:
-        # https://github.com/decidim/decidim/pull/5533
-        @real_user = nil
-
-        result
-      end
-
       # This handles the SLO request coming from an iframe within the Suomi.fi
       # logout page. The `omniauth-saml` strategy handles this with session
       # variables by default but it does not work because the session cookie is
