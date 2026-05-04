@@ -37,7 +37,8 @@ module Decidim
             nickname: user_full_name,
             oauth_signature: user_signature,
             avatar_url: oauth_data[:info][:image],
-            raw_data: oauth_hash
+            raw_data: oauth_hash,
+            tos_agreement: "1"
           }
         end
 
