@@ -29,12 +29,7 @@ module Decidim
           # HETU is temporary or permanent.
           valid_hetu = hetu.send(:valid_format?) && hetu.send(:valid_checksum?)
           if valid_hetu
-            gender =
-              if hetu.gender_neutral?
-                nil
-              else
-                hetu.male? ? "m" : "f"
-              end
+            gender = hetu.male? ? "m" : "f"
             # `.to_s` returns an ISO 8601 formatted string (YYYY-MM-DD for dates)
             date_of_birth = hetu.date_of_birth.to_s
           elsif saml_attributes[:eidas_date_of_birth]
