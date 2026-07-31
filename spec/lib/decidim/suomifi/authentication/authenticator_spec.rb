@@ -289,7 +289,7 @@ describe Decidim::Suomifi::Authentication::Authenticator do
     end
     let(:pin_digest) do
       Digest::MD5.hexdigest(
-        "FI:#{saml_attributes[:national_identification_number]}:#{Rails.application.secrets.secret_key_base}"
+        "FI:#{saml_attributes[:national_identification_number]}:#{Rails.application.secret_key_base}"
       )
     end
 

@@ -66,7 +66,7 @@ module Decidim
           expect(authorization).not_to be_nil
 
           pin_digest = Digest::MD5.hexdigest(
-            "FI:220185-765L:#{Rails.application.secrets.secret_key_base}"
+            "FI:220185-765L:#{Rails.application.secret_key_base}"
           )
           expect(authorization.metadata).to include(
             "eidas" => false,
@@ -234,7 +234,7 @@ module Decidim
             expect(authorization).not_to be_nil
 
             pin_digest = Digest::MD5.hexdigest(
-              "EIDAS:28493196Z:#{Rails.application.secrets.secret_key_base}"
+              "EIDAS:28493196Z:#{Rails.application.secret_key_base}"
             )
             expect(authorization.metadata).to include(
               "eidas" => true,
@@ -265,7 +265,7 @@ module Decidim
             expect(authorization).not_to be_nil
 
             pin_digest = Digest::MD5.hexdigest(
-              "FI:220185-765L:#{Rails.application.secrets.secret_key_base}"
+              "FI:220185-765L:#{Rails.application.secret_key_base}"
             )
             expect(authorization.metadata).to include(
               "eidas" => false,
@@ -325,7 +325,7 @@ module Decidim
         context "when the user is already signed in and authorized" do
           let!(:authorization) do
             base_digest = Digest::MD5.hexdigest(
-              "FI:220185-765L:#{Rails.application.secrets.secret_key_base}"
+              "FI:220185-765L:#{Rails.application.secret_key_base}"
             )
             identifier_digest = "FIHETU:#{base_digest}"
             signature = OmniauthRegistrationForm.create_signature(
@@ -366,7 +366,7 @@ module Decidim
 
             # Check that the metadata was updated
             pin_digest = Digest::MD5.hexdigest(
-              "FI:220185-765L:#{Rails.application.secrets.secret_key_base}"
+              "FI:220185-765L:#{Rails.application.secret_key_base}"
             )
             expect(authorizations.first.metadata).to include(
               "eidas" => false,
@@ -391,7 +391,7 @@ module Decidim
 
           before do
             base_digest = Digest::MD5.hexdigest(
-              "FI:220185-765L:#{Rails.application.secrets.secret_key_base}"
+              "FI:220185-765L:#{Rails.application.secret_key_base}"
             )
             identifier_digest = "FIHETU:#{base_digest}"
             another_user.identities.create!(
@@ -441,7 +441,7 @@ module Decidim
 
           before do
             base_digest = Digest::MD5.hexdigest(
-              "FI:220185-765L:#{Rails.application.secrets.secret_key_base}"
+              "FI:220185-765L:#{Rails.application.secret_key_base}"
             )
             identifier_digest = "FIHETU:#{base_digest}"
             signature = OmniauthRegistrationForm.create_signature(

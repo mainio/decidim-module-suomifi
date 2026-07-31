@@ -95,7 +95,7 @@ module Decidim
 
             if prefix && pin
               Digest::MD5.hexdigest(
-                "#{prefix}:#{pin}:#{Rails.application.secrets.secret_key_base}"
+                "#{prefix}:#{pin}:#{Rails.application.secret_key_base}"
               )
             end
           end

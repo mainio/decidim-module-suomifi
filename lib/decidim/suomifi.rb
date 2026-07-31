@@ -129,12 +129,14 @@ module Decidim
 
     def self.mode
       return config.mode if config.mode
-      return :production unless Rails.application.secrets.omniauth
-      return :production unless Rails.application.secrets.omniauth[:suomifi]
 
-      # Read the mode from the secrets
-      secrets = Rails.application.secrets.omniauth[:suomifi]
-      secrets[:mode] == "test" ? :test : :production
+      # Read the mode from Decidim's omniauth provider configuration.
+      # In Decidim v0.31+, provider settings are registered in
+      # Decidim.config.omniauth_providers instead of secrets.yml.
+      provider_config = Decidim.config.omniauth_providers[:suomifi]
+      return :production unless provider_config
+
+      provider_config[:mode] == "test" ? :test : :production
     end
 
     def self.sp_entity_id

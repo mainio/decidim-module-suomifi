@@ -34,7 +34,7 @@ describe Decidim::Suomifi::ActionAuthorizer do
   let(:date_of_birth) { rand(18..99).years.ago.strftime("%Y-%m-%d") }
   let(:pin_digest) do
     Digest::MD5.hexdigest(
-      "FI:150785-5843:#{Rails.application.secrets.secret_key_base}"
+      "FI:150785-5843:#{Rails.application.secret_key_base}"
     )
   end
 

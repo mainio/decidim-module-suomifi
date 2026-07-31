@@ -40,7 +40,7 @@ describe Decidim::Authorization do
     context "when Decidim core is upgraded" do
       it "PLEASE CHECK THE UPGRADE NOTES" do
         # Search: https://github.com/decidim/decidim/pull/10320
-        expect(Gem::Version.new(Decidim.version)).to be < Gem::Version.new("0.31.0")
+        expect(Gem::Version.new(Decidim.version)).to be < Gem::Version.new("0.32.0")
       end
     end
   end

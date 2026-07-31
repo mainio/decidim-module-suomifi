@@ -21,6 +21,8 @@ if ENV["SIMPLECOV"]
     add_filter %r{^/lib/decidim/[^/]*/admin_engine.rb}
     add_filter %r{^/lib/decidim/[^/]*/component.rb}
     add_filter %r{^/lib/decidim/[^/]*/participatory_space.rb}
+    add_filter "lib/generators/templates/"
+    add_filter "lib/decidim/mpassid/version.rb"
   end
 
   SimpleCov.merge_timeout 1800

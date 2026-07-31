@@ -15,7 +15,7 @@ describe Decidim::Suomifi do
   describe ".mode" do
     it "returns :production by default" do
       allow(config).to receive(:mode).and_return(nil)
-      allow(Rails.application.secrets).to receive(:omniauth).and_return({})
+      allow(Decidim.config).to receive(:omniauth_providers).and_return({})
 
       expect(subject.mode).to eq(:production)
     end
@@ -31,9 +31,9 @@ describe Decidim::Suomifi do
     end
 
     context "when configured through OmniAuth configurations" do
-      it "returns what is set by the module configuration" do
+      it "returns what is set by the provider configuration" do
         allow(config).to receive(:mode).and_return(nil)
-        allow(Rails.application.secrets).to receive(:omniauth).and_return(
+        allow(Decidim.config).to receive(:omniauth_providers).and_return(
           suomifi: { mode: "test" }
         )
 
