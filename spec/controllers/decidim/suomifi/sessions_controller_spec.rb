@@ -51,8 +51,8 @@ module Decidim
               "rack.session.options" => request.session.options
             }
 
-            redirect_path = CGI.escape("/users/slo_callback?success=1")
-            expect(response).to redirect_to("/users/auth/suomifi/spslo?RelayState=#{redirect_path}")
+            redirect_path = CGI.escape("/users/slo_callback?locale=en&success=1")
+            expect(response).to redirect_to("/users/auth/suomifi/spslo?RelayState=#{redirect_path}&locale=en")
             expect(controller.current_user).to be_nil
           end
         end

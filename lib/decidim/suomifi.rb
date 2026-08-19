@@ -15,6 +15,10 @@ require_relative "suomifi/mail_interceptors"
 
 module Decidim
   module Suomifi
+    @configured = false
+
+    mattr_accessor :action_authorizer
+
     # :production - For Suomi.fi production environment
     # :test - For Suomi.fi test environment
     mattr_accessor :mode, instance_reader: false
@@ -23,8 +27,6 @@ module Decidim
     # :medium_extensive - Medium-extensive scope
     # :extensive - Extensive scope
     mattr_accessor :scope_of_data, default: :medium_extensive
-
-    @configured = false
 
     # Defines the email domain for the auto-generated email addresses for the
     # user accounts. You can also use the person's own email address possibly
@@ -36,7 +38,7 @@ module Decidim
     # such as "suomifi-identifier@auto-email-domain.fi" upon their registration.
     #
     # In case this is not defined, the default is the organization's domain.
-    config_accessor :auto_email_domain
+    mattr_accessor :auto_email_domain
 
     # Defines whether to use the person's email address stored in the Suomi.fi
     # database for the user account. Some people do not actively update these
@@ -44,70 +46,67 @@ module Decidim
     # the Suomi.fi database which can belong to another person in the worst case
     # scenario which can cause confusion among the participants. Use this option
     # with caution!
-    config_accessor :use_suomifi_email do
-      false
-    end
+    mattr_accessor :use_suomifi_email, default: false
 
-    config_accessor :sp_entity_id, instance_reader: false
+    mattr_accessor :sp_entity_id, instance_reader: false
 
     # The certificate string for the application
-    config_accessor :certificate, instance_reader: false
+    mattr_accessor :certificate, instance_reader: false
 
     # The private key string for the application
-    config_accessor :private_key, instance_reader: false
+    mattr_accessor :private_key, instance_reader: false
 
     # The certificate file for the application
-    config_accessor :certificate_file
+    mattr_accessor :certificate_file
 
     # The private key file for the application
-    config_accessor :private_key_file
+    mattr_accessor :private_key_file
 
     # Defines how the session gets cleared when the OmniAuth strategy logs the
     # user out. This has been customized to preserve the flash messages in the
     # session after the session is destroyed.
-    config_accessor :idp_slo_session_destroy do
-      proc do |_env, session|
-        flash = session["flash"]
-        redirect_url = session["saml_redirect_url"]
-        result = session.clear
-        session["flash"] = flash if flash
-        session["saml_redirect_url"] = redirect_url if redirect_url
-        result
-      end
-    end
+    mattr_accessor :idp_slo_session_destroy, default: proc { |_env, session|
+      flash = session["flash"]
+      redirect_url = session["saml_redirect_url"]
+      result = session.clear
+      session["flash"] = flash if flash
+      session["saml_redirect_url"] = redirect_url if redirect_url
+      result
+    }
 
     # List of other verification workflows where we want to check if user has
     # used same pin digest
-    config_accessor :other_authorization_handlers do
-      []
-    end
+    mattr_accessor :other_authorization_handlers, default: []
 
     # Extra configuration for the omniauth strategy
-    config_accessor :extra do
-      {}
-    end
+    mattr_accessor :extra, default: {}
 
     # Allows customizing the authorization workflow e.g. for adding custom
     # workflow options or configuring an action authorizer for the
     # particular needs.
-    config_accessor :workflow_configurator do
-      lambda do |workflow|
-        # By default, expiration is set to 0 minutes which means it will
-        # never expire.
-        workflow.expires_in = 0.minutes
-      end
-    end
+    mattr_accessor :workflow_configurator, default: lambda { |workflow|
+      # By default, expiration is set to 0 minutes which means it will
+      # never expire.
+      workflow.expires_in = 0.minutes
+    }
 
     # Allows customizing parts of the authentication flow such as validating
     # the authorization data before allowing the user to be authenticated.
-    config_accessor :authenticator_class do
-      Decidim::Suomifi::Authentication::Authenticator
-    end
+    mattr_accessor :authenticator_class, default: Decidim::Suomifi::Authentication::Authenticator
 
     # Allows customizing how the authorization metadata gets collected from
     # the SAML attributes passed from the authorization endpoint.
-    config_accessor :metadata_collector_class do
-      Decidim::Suomifi::Verification::MetadataCollector
+    mattr_accessor :metadata_collector_class, default: Decidim::Suomifi::Verification::MetadataCollector
+
+    class << self
+      alias raw_mode mode
+      alias raw_sp_entity_id sp_entity_id
+      alias raw_certificate certificate
+      alias raw_private_key private_key
+    end
+
+    def self.config
+      self
     end
 
     def self.configured?
@@ -116,7 +115,7 @@ module Decidim
 
     def self.configure
       @configured = true
-      super
+      yield self
     end
 
     def self.authenticator_for(organization, oauth_hash)
@@ -124,7 +123,7 @@ module Decidim
     end
 
     def self.mode
-      return config.mode if config.mode
+      return raw_mode if raw_mode
 
       # Read the mode from Decidim's omniauth provider configuration.
       # In Decidim v0.31+, provider settings are registered in
@@ -136,7 +135,7 @@ module Decidim
     end
 
     def self.sp_entity_id
-      return config.sp_entity_id if config.sp_entity_id
+      return raw_sp_entity_id if raw_sp_entity_id
 
       "#{application_host}/users/auth/suomifi/metadata"
     end
@@ -144,13 +143,13 @@ module Decidim
     def self.certificate
       return File.read(certificate_file) if certificate_file
 
-      config.certificate
+      raw_certificate
     end
 
     def self.private_key
       return File.read(private_key_file) if private_key_file
 
-      config.private_key
+      raw_private_key
     end
 
     def self.omniauth_settings

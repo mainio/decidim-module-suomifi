@@ -30,10 +30,18 @@ describe Decidim::Suomifi::MailInterceptors::GeneratedRecipientsInterceptor do
       "suomifi-#{digest}@#{domain}"
     end
 
+    let(:test_mailer_class) do
+      Class.new(ApplicationMailer) do
+        def test_email(headers)
+          mail(headers)
+        end
+      end
+    end
+
     context "with an auto-generated email in the 'to' header" do
       it "does not deliver the email" do
         expect do
-          ActionMailer::Base.mail(
+          test_mailer_class.test_email(
             mailer_defaults.merge(
               to: generated_email,
               from: from_email
@@ -45,7 +53,7 @@ describe Decidim::Suomifi::MailInterceptors::GeneratedRecipientsInterceptor do
       context "with other recipients" do
         it "delivers the email only to the other recipients" do
           expect do
-            ActionMailer::Base.mail(
+            test_mailer_class.test_email(
               mailer_defaults.merge(
                 to: [generated_email, "other@recipient.com"],
                 from: from_email
@@ -62,7 +70,7 @@ describe Decidim::Suomifi::MailInterceptors::GeneratedRecipientsInterceptor do
     context "with an auto-generated email in the 'cc' header" do
       it "does not deliver the email" do
         expect do
-          ActionMailer::Base.mail(
+          test_mailer_class.test_email(
             mailer_defaults.merge(
               to: "jdoe@foo.bar",
               cc: generated_email,
@@ -79,7 +87,7 @@ describe Decidim::Suomifi::MailInterceptors::GeneratedRecipientsInterceptor do
       context "with other recipients" do
         it "delivers the email only to the other recipients" do
           expect do
-            ActionMailer::Base.mail(
+            test_mailer_class.test_email(
               mailer_defaults.merge(
                 to: "jdoe@foo.bar",
                 cc: [generated_email, "other@recipient.com"],
@@ -98,7 +106,7 @@ describe Decidim::Suomifi::MailInterceptors::GeneratedRecipientsInterceptor do
     context "with an auto-generated email in the 'bcc' header" do
       it "does not deliver the email" do
         expect do
-          ActionMailer::Base.mail(
+          test_mailer_class.test_email(
             mailer_defaults.merge(
               to: "jdoe@foo.bar",
               cc: "cc@foo.bar",
@@ -117,7 +125,7 @@ describe Decidim::Suomifi::MailInterceptors::GeneratedRecipientsInterceptor do
       context "with other recipients" do
         it "delivers the email only to the other recipients" do
           expect do
-            ActionMailer::Base.mail(
+            test_mailer_class.test_email(
               mailer_defaults.merge(
                 to: "jdoe@foo.bar",
                 cc: "cc@foo.bar",

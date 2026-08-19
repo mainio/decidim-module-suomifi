@@ -30,11 +30,9 @@ module Decidim
           session["saml_redirect_url"] = request.params["redirect_url"]
 
           # Generate the SLO redirect path and parameters.
-          relay = slo_callback_user_session_path
-          relay += "?success=1" if signed_out
-          params = "?RelayState=#{CGI.escape(relay)}"
+          relay = slo_callback_user_session_path(signed_out ? { success: "1" } : {})
 
-          return redirect_to user_suomifi_omniauth_spslo_path + params
+          return redirect_to user_suomifi_omniauth_spslo_path(RelayState: relay)
         end
 
         # Otherwise, continue normally

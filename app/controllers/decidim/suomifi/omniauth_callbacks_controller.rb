@@ -174,11 +174,8 @@ module Decidim
         )
 
         redirect_path = stored_location_for(resource || :user) || decidim.root_path
-        if session.delete("decidim-suomifi.signed_in")
-          params = "?RelayState=#{CGI.escape(redirect_path)}"
 
-          return redirect_to user_suomifi_omniauth_spslo_path + params
-        end
+        return redirect_to user_suomifi_omniauth_spslo_path(RelayState: redirect_path) if session.delete("decidim-suomifi.signed_in")
 
         redirect_to redirect_path
       end

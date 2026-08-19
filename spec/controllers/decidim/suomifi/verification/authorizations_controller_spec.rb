@@ -22,7 +22,7 @@ module Decidim
             get :new
             expect(response).to render_template(:new)
             expect(response.body).to include("Redirection")
-            expect(response.body).to include(%(href="/users/auth/suomifi"))
+            expect(response.body).to include(%(href="/users/auth/suomifi?locale=en"))
           end
         end
       end

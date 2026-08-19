@@ -92,7 +92,7 @@ module Decidim
           user = User.last
 
           expect(user.sign_in_count).to eq(1)
-          expect(response).to redirect_to("/")
+          expect(response).to redirect_to("/en")
         end
 
         context "when the session has a pending redirect" do
@@ -285,7 +285,7 @@ module Decidim
           it "redirects to the root path" do
             omniauth_callback_get
 
-            expect(response).to redirect_to("/")
+            expect(response).to redirect_to("/en")
           end
 
           context "when the session has a pending redirect" do
@@ -412,7 +412,7 @@ module Decidim
               name: "suomifi_eid"
             )
             expect(authorization).to be_nil
-            expect(response).to redirect_to("/users/auth/suomifi/spslo?RelayState=%2F")
+            expect(response).to redirect_to("/users/auth/suomifi/spslo?RelayState=%2Fen&locale=en")
             expect(flash[:alert]).to eq(
               "Another user has already been identified using this identity. Please sign out and sign in again directly using Suomi.fi."
             )
@@ -471,7 +471,7 @@ module Decidim
               name: "suomifi_eid"
             )
             expect(authorization).to be_nil
-            expect(response).to redirect_to("/users/auth/suomifi/spslo?RelayState=%2F")
+            expect(response).to redirect_to("/users/auth/suomifi/spslo?RelayState=%2Fen&locale=en")
             expect(flash[:alert]).to eq(
               "Another user has already authorized themselves with the same identity."
             )
@@ -496,7 +496,7 @@ module Decidim
             omniauth_callback_get
 
             expect(User.last).to be_nil
-            expect(response).to redirect_to("/users/sign_in")
+            expect(response).to redirect_to("/en/users/sign_in")
             expect(flash[:alert]).to eq(
               "The authentication request was not handled within an allowed timeframe. Please try again."
             )
@@ -520,7 +520,7 @@ module Decidim
             omniauth_callback_get
 
             expect(User.last).to be_nil
-            expect(response).to redirect_to("/users/sign_in")
+            expect(response).to redirect_to("/en/users/sign_in")
             expect(flash[:alert]).to eq(
               "Authentication session expired. Please try again."
             )
@@ -537,7 +537,7 @@ module Decidim
             omniauth_callback_get
 
             expect(User.last).to be_nil
-            expect(response).to redirect_to("/users/sign_in")
+            expect(response).to redirect_to("/en/users/sign_in")
             expect(flash[:alert]).to eq(
               "Authentication failed or cancelled. Please try again."
             )
