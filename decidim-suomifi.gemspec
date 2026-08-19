@@ -7,7 +7,7 @@ require "decidim/suomifi/version"
 Gem::Specification.new do |spec|
   spec.name = "decidim-suomifi"
   spec.version = Decidim::Suomifi::VERSION
-  spec.required_ruby_version = ">= 3.3"
+  spec.required_ruby_version = ">= 3.4"
   spec.authors = ["Antti Hukkanen"]
   spec.email = ["antti.hukkanen@mainiotech.fi"]
   spec.metadata = {

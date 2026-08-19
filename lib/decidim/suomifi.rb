@@ -15,20 +15,16 @@ require_relative "suomifi/mail_interceptors"
 
 module Decidim
   module Suomifi
-    include ActiveSupport::Configurable
-
-    @configured = false
-
     # :production - For Suomi.fi production environment
     # :test - For Suomi.fi test environment
-    config_accessor :mode, instance_reader: false
+    mattr_accessor :mode, instance_reader: false
 
     # :limited - Limited scope
     # :medium_extensive - Medium-extensive scope
     # :extensive - Extensive scope
-    config_accessor :scope_of_data do
-      :medium_extensive
-    end
+    mattr_accessor :scope_of_data, default: :medium_extensive
+
+    @configured = false
 
     # Defines the email domain for the auto-generated email addresses for the
     # user accounts. You can also use the person's own email address possibly
