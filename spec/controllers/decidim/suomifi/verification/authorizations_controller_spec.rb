@@ -5,7 +5,7 @@ require "spec_helper"
 module Decidim
   module Suomifi
     module Verification
-      describe AuthorizationsController, type: :controller do
+      describe AuthorizationsController do
         routes { Decidim::Suomifi::Verification::Engine.routes }
 
         render_views
@@ -22,7 +22,7 @@ module Decidim
             get :new
             expect(response).to render_template(:new)
             expect(response.body).to include("Redirection")
-            expect(response.body).to include(%(href="/users/auth/suomifi"))
+            expect(response.body).to include(%(href="/users/auth/suomifi?locale=en"))
           end
         end
       end

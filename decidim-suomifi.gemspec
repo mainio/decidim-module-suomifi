@@ -7,7 +7,7 @@ require "decidim/suomifi/version"
 Gem::Specification.new do |spec|
   spec.name = "decidim-suomifi"
   spec.version = Decidim::Suomifi::VERSION
-  spec.required_ruby_version = ">= 3.0"
+  spec.required_ruby_version = ">= 3.4"
   spec.authors = ["Antti Hukkanen"]
   spec.email = ["antti.hukkanen@mainiotech.fi"]
   spec.metadata = {
@@ -30,10 +30,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "decidim-core", Decidim::Suomifi::DECIDIM_VERSION
   spec.add_dependency "henkilotunnus", "~> 1.2.0"
-  spec.add_dependency "omniauth-suomifi", "~> 0.7.0"
-
-  spec.add_development_dependency "decidim-dev", Decidim::Suomifi::DECIDIM_VERSION
-
-  # Required for encoding the SAML responses
-  spec.add_development_dependency "xmlenc", "~> 0.7.1"
+  spec.add_dependency "omniauth-suomifi", "~> 0.9.0"
 end

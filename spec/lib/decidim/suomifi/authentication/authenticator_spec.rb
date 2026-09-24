@@ -5,7 +5,7 @@ require "spec_helper"
 describe Decidim::Suomifi::Authentication::Authenticator do
   subject { described_class.new(organization, oauth_hash) }
 
-  let(:organization) { create(:organization) }
+  let(:organization) { create(:organization, host: "1.lvh.me") }
   let(:oauth_hash) do
     {
       provider: oauth_provider,
@@ -15,7 +15,7 @@ describe Decidim::Suomifi::Authentication::Authenticator do
         image: oauth_image
       },
       extra: {
-        saml_attributes: saml_attributes
+        saml_attributes:
       }
     }
   end
@@ -76,7 +76,7 @@ describe Decidim::Suomifi::Authentication::Authenticator do
 
   describe "#user_params_from_oauth_hash" do
     it "returns the expected hash" do
-      signature = ::Decidim::OmniauthRegistrationForm.create_signature(
+      signature = Decidim::OmniauthRegistrationForm.create_signature(
         oauth_provider,
         oauth_uid
       )
@@ -231,7 +231,7 @@ describe Decidim::Suomifi::Authentication::Authenticator do
   end
 
   describe "#identify_user!" do
-    let(:user) { create(:user, :confirmed, organization: organization) }
+    let(:user) { create(:user, :confirmed, organization:) }
 
     it "creates a new identity for the user" do
       id = subject.identify_user!(user)
@@ -247,7 +247,7 @@ describe Decidim::Suomifi::Authentication::Authenticator do
     context "when an identity already exists" do
       let!(:identity) do
         user.identities.create!(
-          organization: organization,
+          organization:,
           provider: oauth_provider,
           uid: oauth_uid
         )
@@ -259,11 +259,11 @@ describe Decidim::Suomifi::Authentication::Authenticator do
     end
 
     context "when a matching identity already exists for another user" do
-      let(:another_user) { create(:user, :confirmed, organization: organization) }
+      let(:another_user) { create(:user, :confirmed, organization:) }
 
       before do
         another_user.identities.create!(
-          organization: organization,
+          organization:,
           provider: oauth_provider,
           uid: oauth_uid
         )
@@ -280,16 +280,16 @@ describe Decidim::Suomifi::Authentication::Authenticator do
   end
 
   describe "#authorize_user!" do
-    let(:user) { create(:user, :confirmed, organization: organization) }
+    let(:user) { create(:user, :confirmed, organization:) }
     let(:signature) do
-      ::Decidim::OmniauthRegistrationForm.create_signature(
+      Decidim::OmniauthRegistrationForm.create_signature(
         oauth_provider,
         oauth_uid
       )
     end
     let(:pin_digest) do
       Digest::MD5.hexdigest(
-        "FI:150785-5843:#{Rails.application.secrets.secret_key_base}"
+        "FI:#{saml_attributes[:national_identification_number]}:#{Rails.application.secret_key_base}"
       )
     end
 
@@ -315,11 +315,42 @@ describe Decidim::Suomifi::Authentication::Authenticator do
       )
     end
 
+    context "when the person is a male" do
+      let(:saml_attributes) do
+        {
+          national_identification_number: "150785-915S",
+          common_name: "Mainio Matti Mikko",
+          display_name: "Matti Mainio",
+          first_names: "Matti Mikko",
+          given_name: "Matti",
+          last_name: "Mainio"
+        }
+      end
+
+      it "creates a new authorization with correct gender" do
+        auth = subject.authorize_user!(user)
+
+        expect(auth.metadata).to include(
+          "eidas" => false,
+          "pin_digest" => pin_digest,
+          "gender" => "m",
+          "date_of_birth" => "1985-07-15",
+          "first_name" => "Matti Mikko",
+          "given_name" => "Matti",
+          "last_name" => "Mainio",
+          "municipality" => nil,
+          "municipality_name" => nil,
+          "postal_code" => nil,
+          "permanent_address" => false
+        )
+      end
+    end
+
     context "when an authorization already exists" do
       let!(:authorization) do
         Decidim::Authorization.create!(
           name: "suomifi_eid",
-          user: user,
+          user:,
           unique_id: signature
         )
       end
@@ -345,7 +376,7 @@ describe Decidim::Suomifi::Authentication::Authenticator do
     end
 
     context "when a matching authorization already exists for another user" do
-      let(:another_user) { create(:user, :confirmed, organization: organization) }
+      let(:another_user) { create(:user, :confirmed, organization:) }
 
       before do
         Decidim::Authorization.create!(

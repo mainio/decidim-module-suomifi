@@ -15,7 +15,7 @@ module Decidim
 
       # For testing with signed in user
       let(:confirmed_user) do
-        create(:user, :confirmed, organization: organization)
+        create(:user, :confirmed, organization:)
       end
 
       before do
@@ -60,13 +60,13 @@ module Decidim
           expect(user.nickname).to eq("matti_mainio")
 
           authorization = Authorization.find_by(
-            user: user,
+            user:,
             name: "suomifi_eid"
           )
           expect(authorization).not_to be_nil
 
           pin_digest = Digest::MD5.hexdigest(
-            "FI:220185-765L:#{Rails.application.secrets.secret_key_base}"
+            "FI:220185-765L:#{Rails.application.secret_key_base}"
           )
           expect(authorization.metadata).to include(
             "eidas" => false,
@@ -92,7 +92,7 @@ module Decidim
           user = User.last
 
           expect(user.sign_in_count).to eq(1)
-          expect(response).to redirect_to("/")
+          expect(response).to redirect_to("/en")
         end
 
         context "when the session has a pending redirect" do
@@ -140,7 +140,7 @@ module Decidim
             expect(user.nickname).to eq("marja_mainio")
 
             authorization = Authorization.find_by(
-              user: user,
+              user:,
               name: "suomifi_eid"
             )
             expect(authorization).not_to be_nil
@@ -228,13 +228,13 @@ module Decidim
             expect(user.nickname).to eq("felipe_guerrero_torr")
 
             authorization = Authorization.find_or_initialize_by(
-              user: user,
+              user:,
               name: "suomifi_eid"
             )
             expect(authorization).not_to be_nil
 
             pin_digest = Digest::MD5.hexdigest(
-              "EIDAS:28493196Z:#{Rails.application.secrets.secret_key_base}"
+              "EIDAS:28493196Z:#{Rails.application.secret_key_base}"
             )
             expect(authorization.metadata).to include(
               "eidas" => true,
@@ -265,7 +265,7 @@ module Decidim
             expect(authorization).not_to be_nil
 
             pin_digest = Digest::MD5.hexdigest(
-              "FI:220185-765L:#{Rails.application.secrets.secret_key_base}"
+              "FI:220185-765L:#{Rails.application.secret_key_base}"
             )
             expect(authorization.metadata).to include(
               "eidas" => false,
@@ -285,7 +285,7 @@ module Decidim
           it "redirects to the root path" do
             omniauth_callback_get
 
-            expect(response).to redirect_to("/")
+            expect(response).to redirect_to("/en")
           end
 
           context "when the session has a pending redirect" do
@@ -325,7 +325,7 @@ module Decidim
         context "when the user is already signed in and authorized" do
           let!(:authorization) do
             base_digest = Digest::MD5.hexdigest(
-              "FI:220185-765L:#{Rails.application.secrets.secret_key_base}"
+              "FI:220185-765L:#{Rails.application.secret_key_base}"
             )
             identifier_digest = "FIHETU:#{base_digest}"
             signature = OmniauthRegistrationForm.create_signature(
@@ -366,7 +366,7 @@ module Decidim
 
             # Check that the metadata was updated
             pin_digest = Digest::MD5.hexdigest(
-              "FI:220185-765L:#{Rails.application.secrets.secret_key_base}"
+              "FI:220185-765L:#{Rails.application.secret_key_base}"
             )
             expect(authorizations.first.metadata).to include(
               "eidas" => false,
@@ -386,16 +386,16 @@ module Decidim
 
         context "when another user is already identified with the same identity" do
           let(:another_user) do
-            create(:user, :confirmed, organization: organization)
+            create(:user, :confirmed, organization:)
           end
 
           before do
             base_digest = Digest::MD5.hexdigest(
-              "FI:220185-765L:#{Rails.application.secrets.secret_key_base}"
+              "FI:220185-765L:#{Rails.application.secret_key_base}"
             )
             identifier_digest = "FIHETU:#{base_digest}"
             another_user.identities.create!(
-              organization: organization,
+              organization:,
               provider: "suomifi",
               uid: identifier_digest
             )
@@ -412,7 +412,7 @@ module Decidim
               name: "suomifi_eid"
             )
             expect(authorization).to be_nil
-            expect(response).to redirect_to("/users/auth/suomifi/spslo?RelayState=%2F")
+            expect(response).to redirect_to("/users/auth/suomifi/spslo?RelayState=%2Fen&locale=en")
             expect(flash[:alert]).to eq(
               "Another user has already been identified using this identity. Please sign out and sign in again directly using Suomi.fi."
             )
@@ -436,12 +436,12 @@ module Decidim
 
         context "when another user is already authorized with the same identity" do
           let(:another_user) do
-            create(:user, :confirmed, organization: organization)
+            create(:user, :confirmed, organization:)
           end
 
           before do
             base_digest = Digest::MD5.hexdigest(
-              "FI:220185-765L:#{Rails.application.secrets.secret_key_base}"
+              "FI:220185-765L:#{Rails.application.secret_key_base}"
             )
             identifier_digest = "FIHETU:#{base_digest}"
             signature = OmniauthRegistrationForm.create_signature(
@@ -471,7 +471,7 @@ module Decidim
               name: "suomifi_eid"
             )
             expect(authorization).to be_nil
-            expect(response).to redirect_to("/users/auth/suomifi/spslo?RelayState=%2F")
+            expect(response).to redirect_to("/users/auth/suomifi/spslo?RelayState=%2Fen&locale=en")
             expect(flash[:alert]).to eq(
               "Another user has already authorized themselves with the same identity."
             )
@@ -496,7 +496,7 @@ module Decidim
             omniauth_callback_get
 
             expect(User.last).to be_nil
-            expect(response).to redirect_to("/users/sign_in")
+            expect(response).to redirect_to("/en/users/sign_in")
             expect(flash[:alert]).to eq(
               "The authentication request was not handled within an allowed timeframe. Please try again."
             )
@@ -520,7 +520,7 @@ module Decidim
             omniauth_callback_get
 
             expect(User.last).to be_nil
-            expect(response).to redirect_to("/users/sign_in")
+            expect(response).to redirect_to("/en/users/sign_in")
             expect(flash[:alert]).to eq(
               "Authentication session expired. Please try again."
             )
@@ -537,7 +537,7 @@ module Decidim
             omniauth_callback_get
 
             expect(User.last).to be_nil
-            expect(response).to redirect_to("/users/sign_in")
+            expect(response).to redirect_to("/en/users/sign_in")
             expect(flash[:alert]).to eq(
               "Authentication failed or cancelled. Please try again."
             )

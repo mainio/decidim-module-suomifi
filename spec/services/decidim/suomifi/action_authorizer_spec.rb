@@ -6,39 +6,49 @@ describe Decidim::Suomifi::ActionAuthorizer do
   subject { described_class.new(authorization, options, component, resource) }
 
   let(:organization) { create(:organization) }
-  let(:process) { create(:participatory_process, organization: organization) }
+  let(:process) { create(:participatory_process, organization:) }
   let(:component) { create(:component, manifest_name: "budgets", participatory_space: process) }
   let(:resource) { nil }
 
   let(:options) do
     {
       "minimum_age" => minimum_age.to_s,
+      "maximum_age" => maximum_age.to_s,
       "allowed_municipalities" => allowed_municipalities
     }
   end
   let(:minimum_age) { 13 }
+  let(:maximum_age) { 0 }
   let(:allowed_municipalities) { "91,837,49" }
 
-  let(:authorization) { create(:authorization, :granted, user: user, metadata: metadata, pseudonymized_pin: pin_digest) }
-  let(:user) { create :user, organization: organization }
+  let(:authorization) { create(:authorization, :granted, user:, metadata:, pseudonymized_pin: pin_digest) }
+  let(:user) { create(:user, organization:) }
   let(:metadata) do
     {
-      municipality: municipality,
-      date_of_birth: date_of_birth,
-      pin_digest: pin_digest
+      municipality:,
+      date_of_birth:,
+      pin_digest:
     }
   end
   let(:municipality) { "837" }
   let(:date_of_birth) { rand(18..99).years.ago.strftime("%Y-%m-%d") }
   let(:pin_digest) do
     Digest::MD5.hexdigest(
-      "FI:150785-5843:#{Rails.application.secrets.secret_key_base}"
+      "FI:150785-5843:#{Rails.application.secret_key_base}"
     )
   end
 
   context "when everything is OK" do
     it "returns status_code and data" do
       expect(subject.authorize).to eq([:ok, {}])
+    end
+
+    context "with a leap year birthday" do
+      let(:date_of_birth) { "2004-02-29" }
+
+      it "returns status_code and data" do
+        expect(subject.authorize).to eq([:ok, {}])
+      end
     end
   end
 
@@ -72,7 +82,7 @@ describe Decidim::Suomifi::ActionAuthorizer do
               key: "too_young",
               params: {
                 scope: "suomifi_action_authorizer.restrictions",
-                minimum_age: minimum_age
+                minimum_age:
               }
             }
           }
@@ -96,7 +106,56 @@ describe Decidim::Suomifi::ActionAuthorizer do
                 key: "too_young",
                 params: {
                   scope: "suomifi_action_authorizer.restrictions",
-                  minimum_age: minimum_age
+                  minimum_age:
+                }
+              }
+            },
+            { action: :reauthorize },
+            { cancel: true }
+          ]
+        )
+      end
+    end
+  end
+
+  context "when the user is too old" do
+    let(:maximum_age) { 18 }
+    let(:date_of_birth) { 20.years.ago.strftime("%Y-%m-%d") }
+
+    it "is unauthorized" do
+      expect(subject.authorize).to eq(
+        [
+          :unauthorized,
+          {
+            extra_explanation: {
+              key: "too_old",
+              params: {
+                scope: "suomifi_action_authorizer.restrictions",
+                maximum_age:
+              }
+            }
+          }
+        ]
+      )
+    end
+
+    context "when reauthorization is allowed" do
+      before do
+        # rubocop:disable RSpec/SubjectStub
+        allow(subject).to receive(:allow_reauthorization?).and_return(true)
+        # rubocop:enable RSpec/SubjectStub
+      end
+
+      it "is unauthorized" do
+        expect(subject.authorize).to eq(
+          [
+            :incomplete,
+            {
+              extra_explanation: {
+                key: "too_old",
+                params: {
+                  scope: "suomifi_action_authorizer.restrictions",
+                  maximum_age:
                 }
               }
             },
@@ -165,6 +224,7 @@ describe Decidim::Suomifi::ActionAuthorizer do
       expect(subject.redirect_params).to eq(
         {
           "minimum_age" => minimum_age,
+          "maximum_age" => maximum_age,
           "allowed_municipalities" => allowed_municipalities
         }
       )

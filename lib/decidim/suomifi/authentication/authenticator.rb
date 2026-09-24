@@ -37,7 +37,8 @@ module Decidim
             nickname: user_full_name,
             oauth_signature: user_signature,
             avatar_url: oauth_data[:info][:image],
-            raw_data: oauth_hash
+            raw_data: oauth_hash,
+            tos_agreement: "1"
           }
         end
 
@@ -53,7 +54,7 @@ module Decidim
 
         def identify_user!(user)
           identity = user.identities.find_by(
-            organization: organization,
+            organization:,
             provider: oauth_data[:provider],
             uid: user_identifier
           )
@@ -61,7 +62,7 @@ module Decidim
 
           # Check that the identity is not already bound to another user.
           id = Decidim::Identity.find_by(
-            organization: organization,
+            organization:,
             provider: oauth_data[:provider],
             uid: user_identifier
           )
@@ -69,7 +70,7 @@ module Decidim
           raise IdentityBoundToOtherUserError if id
 
           user.identities.create!(
-            organization: organization,
+            organization:,
             provider: oauth_data[:provider],
             uid: user_identifier
           )
@@ -85,7 +86,7 @@ module Decidim
           else
             authorization = Decidim::Authorization.find_or_initialize_by(
               name: "suomifi_eid",
-              user: user
+              user:
             )
           end
 

@@ -5,6 +5,7 @@ en:
         explanation: Identify yourself using the Suomi.fi e-Identification service.
         name: Suomi.fi e-Identification
         fields:
+          maximum_age: Maximum age
           minimum_age: Minimum age
           allowed_municipalities: Allowed municipality codes
           other_authorization_handlers: Other authorization handlers
@@ -54,4 +55,5 @@ en:
     restrictions:
       disallowed_municipality: Voting is limited to residents of the municipality only.
       physically_identified: You have been already identified at a physical location. Please contact your municipality.
+      too_old: You are too old to vote.
       too_young: You are too young to vote.

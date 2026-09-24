@@ -15,22 +15,24 @@ DECIDIM_VERSION = Decidim::Suomifi::DECIDIM_VERSION
 gem "decidim", DECIDIM_VERSION
 gem "decidim-suomifi", path: "."
 
-gem "bootsnap", "~> 1.4"
-gem "puma", "~> 5.0"
+gem "bootsnap", "~> 1.17"
+
+gem "puma", ">= 6.4.2"
 
 group :development, :test do
   gem "byebug", "~> 11.0", platform: :mri
   gem "decidim-dev", DECIDIM_VERSION
-  gem "rubocop-faker"
-  gem "rubocop-performance", "~> 1.6.0"
+  gem "decidim-initiatives", DECIDIM_VERSION
+
+  # Fix issue with simplecov-cobertura
+  # See: https://github.com/jessebs/simplecov-cobertura/pull/44
+  gem "rexml", "3.4.1"
 end
 
 group :development do
-  gem "faker", "~> 2.14"
+  gem "faker", "~> 3.2.2"
   gem "letter_opener_web", "~> 2.0"
-  gem "listen", "~> 3.1"
-  gem "spring", "~> 2.0"
-  gem "spring-watcher-listen", "~> 2.0"
+  gem "listen", "~> 3.8"
   gem "web-console", "~> 4.2"
 end
 

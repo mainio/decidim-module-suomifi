@@ -18,7 +18,7 @@ module Decidim
           # Check if the user was already signed out by another service and
           # redirect directly to the SLO callback in this case as we do not
           # need to sign out the user again (the request would fail).
-          suomifi_session = Decidim::Suomifi::Session.find_by(saml_uid: saml_uid, saml_session_index: saml_session_index)
+          suomifi_session = Decidim::Suomifi::Session.find_by(saml_uid:, saml_session_index:)
           session_ended = suomifi_session&.ended?
           suomifi_session&.destroy!
           return redirect_to(slo_callback_user_session_path(success: "1")) if session_ended
@@ -30,28 +30,13 @@ module Decidim
           session["saml_redirect_url"] = request.params["redirect_url"]
 
           # Generate the SLO redirect path and parameters.
-          relay = slo_callback_user_session_path
-          relay += "?success=1" if signed_out
-          params = "?RelayState=#{CGI.escape(relay)}"
+          relay = slo_callback_user_session_path(signed_out ? { success: "1" } : {})
 
-          return redirect_to user_suomifi_omniauth_spslo_path + params
+          return redirect_to user_suomifi_omniauth_spslo_path(RelayState: relay)
         end
 
         # Otherwise, continue normally
         super
-      end
-
-      # This can be removed after the following PR is merged to the core:
-      # https://github.com/decidim/decidim/pull/5823
-      def sign_out(resource_or_scope = nil)
-        result = super
-
-        # Because of this change in the core, we have to manually clear the
-        # `@real_user` instance variable after sign out:
-        # https://github.com/decidim/decidim/pull/5533
-        @real_user = nil
-
-        result
       end
 
       # This handles the SLO request coming from an iframe within the Suomi.fi

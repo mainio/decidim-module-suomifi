@@ -14,7 +14,7 @@ module Decidim
 
       # For testing with signed in user
       let(:confirmed_user) do
-        create(:user, :confirmed, organization: organization)
+        create(:user, :confirmed, organization:)
       end
 
       before do
@@ -51,8 +51,8 @@ module Decidim
               "rack.session.options" => request.session.options
             }
 
-            redirect_path = CGI.escape("/users/slo_callback?success=1")
-            expect(response).to redirect_to("/users/auth/suomifi/spslo?RelayState=#{redirect_path}")
+            redirect_path = CGI.escape("/users/slo_callback?locale=en&success=1")
+            expect(response).to redirect_to("/users/auth/suomifi/spslo?RelayState=#{redirect_path}&locale=en")
             expect(controller.current_user).to be_nil
           end
         end
@@ -148,7 +148,7 @@ module Decidim
             get "/users/slo_callback", params: { success: "1" }
 
             expect(response).to redirect_to("/")
-            expect(flash[:notice]).to eq("Signed out successfully.")
+            expect(flash[:notice]).to eq("Logged out successfully.")
           end
         end
       end
