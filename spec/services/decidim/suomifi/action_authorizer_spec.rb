@@ -42,6 +42,14 @@ describe Decidim::Suomifi::ActionAuthorizer do
     it "returns status_code and data" do
       expect(subject.authorize).to eq([:ok, {}])
     end
+
+    context "with a leap year birthday" do
+      let(:date_of_birth) { "2004-02-29" }
+
+      it "returns status_code and data" do
+        expect(subject.authorize).to eq([:ok, {}])
+      end
+    end
   end
 
   context "when the user is from a wrong municipality" do
