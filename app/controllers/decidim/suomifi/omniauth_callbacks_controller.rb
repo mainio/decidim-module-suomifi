@@ -10,6 +10,7 @@ module Decidim
       skip_before_action :verify_authenticity_token, only: [:suomifi, :failure]
       skip_after_action :verify_same_origin_request, only: [:suomifi, :failure]
 
+      # rubocop:disable Decidim/EnforcePermissionTo
       # This is called always after the user returns from the authentication
       # flow from the Suomi.fi identity provider.
       def suomifi
@@ -150,6 +151,7 @@ module Decidim
       def first_login_and_not_authorized?(_user)
         false
       end
+      # rubocop:enable Decidim/EnforcePermissionTo
 
       private
 

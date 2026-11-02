@@ -6,6 +6,7 @@ module Decidim
       class AuthorizationsController < ::Decidim::ApplicationController
         skip_before_action :store_current_location
 
+        # rubocop:disable Decidim/EnforcePermissionTo
         def new
           # Do not enforce the permission here because it would cause
           # re-authorizations not to work as the authorization already exists.
@@ -18,6 +19,7 @@ module Decidim
         def edit
           # Same as above.
         end
+        # rubocop:enable Decidim/EnforcePermissionTo
       end
     end
   end

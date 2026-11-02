@@ -3,6 +3,7 @@
 module Decidim
   module Suomifi
     class SessionsController < ::Decidim::Devise::SessionsController
+      # rubocop:disable Decidim/EnforcePermissionTo
       def destroy
         # In case the user is signed in through Suomi.fi, redirect them through
         # the SPSLO flow.
@@ -82,6 +83,7 @@ module Decidim
 
         "/"
       end
+      # rubocop:enable Decidim/EnforcePermissionTo
     end
   end
 end
