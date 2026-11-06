@@ -10,6 +10,7 @@ module Decidim
       skip_before_action :verify_authenticity_token, only: [:suomifi, :failure]
       skip_after_action :verify_same_origin_request, only: [:suomifi, :failure]
 
+      # Disabling rubocop for authorization rule
       # rubocop:disable Decidim/EnforcePermissionTo
       # This is called always after the user returns from the authentication
       # flow from the Suomi.fi identity provider.

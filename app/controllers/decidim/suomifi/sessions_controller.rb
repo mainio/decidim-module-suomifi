@@ -3,6 +3,7 @@
 module Decidim
   module Suomifi
     class SessionsController < ::Decidim::Devise::SessionsController
+      # Disabling rubocop for logout
       # rubocop:disable Decidim/EnforcePermissionTo
       def destroy
         # In case the user is signed in through Suomi.fi, redirect them through
